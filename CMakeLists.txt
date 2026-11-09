@@ -7,3 +7,6 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 
 add_subdirectory(engine)
 add_subdirectory(sandbox)
+
+enable_testing()
+add_subdirectory(tests)
