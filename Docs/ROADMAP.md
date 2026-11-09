@@ -7,7 +7,7 @@ Une étape n'est terminée que lorsque ses tests passent. A et B correspondent �
 ## Phase 0 : Base commune (lun. 9, à deux)
 
 - [ ] **Décisions :** répartition, namespace, gestion des erreurs, format `.asset`
-- [ ] **`IInputStream` et `IOutputStream`**
+- [x] **`IInputStream` et `IOutputStream`**
 
 ## Phase 1 : Fondations (10-12 nov.)
 

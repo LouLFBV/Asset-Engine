@@ -3,6 +3,8 @@
 #include <AssetEngine/Asset/JobSystem.h>
 #include <AssetEngine/Core/Factory.h>
 #include <AssetEngine/Core/Guid.h>
+#include <AssetEngine/Core/IInputStream.h>
+#include <AssetEngine/Core/IOutputStream.h>
 #include <AssetEngine/Core/Log.h>
 #include <AssetEngine/Core/RTTI.h>
 #include <AssetEngine/Security/Checksum.h>
