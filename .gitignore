@@ -66,3 +66,22 @@ vcpkg_installed/
 # test output & cache
 Testing/
 .cache/
+
+# Visual Studio: IDE state and caches
+.vs/
+*.vcxproj.user
+*.suo
+*.user
+*.VC.db
+*.VC.opendb
+*.ipch
+ipch/
+
+# Visual Studio: build output
+[Dd]ebug/
+[Rr]elease/
+x64/
+x86/
+*.tlog
+*.idb
+*.recipe
