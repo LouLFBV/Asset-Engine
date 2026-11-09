@@ -5,6 +5,7 @@ FetchContent_Declare(Catch2
     GIT_SHALLOW TRUE)
 FetchContent_MakeAvailable(Catch2)
 
-add_executable(Tests Smoke.cpp)
+file(GLOB_RECURSE TEST_SOURCES CONFIGURE_DEPENDS *.cpp)
+add_executable(Tests ${TEST_SOURCES})
 target_link_libraries(Tests PRIVATE AssetEngine Catch2::Catch2WithMain)
 add_test(NAME Tests COMMAND Tests)
