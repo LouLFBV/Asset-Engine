@@ -92,12 +92,12 @@ En texte, le fichier contient un objet JSON avec les clés `header`, `metadata` 
 | | Personne A | Personne B |
 |---|---|---|
 | **Pour commencer** | Réflexion | Lib JSON, CRC32, SHA-256, HMAC |
-| **Ensuite** | `IArchive`, `BinaryArchive`, `Serializer<T>` | `TextArchive`, `SecureStream` |
+| **Ensuite** | `IArchive`, `MemoryStream`, `BinaryArchive`, `Serializer<T>` | `TextArchive`, `SecureStream` |
 | **À la fin** | `AssetRegistry`, format `.asset` | `JobSystem`, `AssetCache`, `AssetHandle`, `AssetManager` |
 
-À deux : les streams au départ, puis ImGui, la démo et la soutenance.
+À deux : les interfaces de streams au départ, puis ImGui, la démo et la soutenance.
 
-A pousse `IArchive` sur `dev` dès qu'elle est stable, sans attendre `BinaryArchive`.
+A pousse `IArchive` et `MemoryStream` sur `dev` dès qu'ils sont stables, sans attendre `BinaryArchive`.
 
 ## À valider
 

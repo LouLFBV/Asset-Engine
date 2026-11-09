@@ -8,10 +8,6 @@ Une étape n'est terminée que lorsque ses tests passent. A et B correspondent �
 
 - [ ] **Décisions :** répartition, namespace, gestion des erreurs, format `.asset`
 - [ ] **`IInputStream` et `IOutputStream`**
-- [ ] **`MemoryStream`**
-  - [ ] Test : écrire puis relire donne les mêmes octets
-  - [ ] Test : lire au-delà de la fin renvoie moins d'octets, sans planter
-  - [ ] Test : `Seek` et `Size` donnent les bonnes valeurs
 
 ## Phase 1 : Fondations (10-12 nov.)
 
@@ -52,6 +48,10 @@ Une étape n'est terminée que lorsque ses tests passent. A et B correspondent �
 ### A
 
 - [ ] **`IArchive`**, à pousser sur `dev` dès qu'elle est stable
+- [ ] **`MemoryStream`**, à pousser sur `dev` avec `IArchive`
+  - [ ] Test : écrire puis relire donne les mêmes octets
+  - [ ] Test : lire au-delà de la fin renvoie moins d'octets, sans planter
+  - [ ] Test : `Seek` et `Size` donnent les bonnes valeurs
 - [ ] **Concepts et `Serializer<T>`**
   - [ ] Test : un type non sérialisable ne compile pas (`static_assert` sur le concept)
 - [ ] **`BinaryArchive`**
