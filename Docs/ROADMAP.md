@@ -27,8 +27,8 @@ Chaque step se termine par **un test qui passe, puis un commit sur sa branche**.
 
 ### Mardi 10 : archive binaire
 
-- [ ] **Step 5 :** `BinaryArchive`, types primaires et chaînes
-  - [ ] Test : aller-retour, valeurs limites, chaîne vide
+- [x] **Step 5 :** `BinaryArchive`, types primaires et chaînes
+  - [x] Test : aller-retour, valeurs limites, chaîne vide
 - [ ] **Step 6 :** `BinaryArchive`, tableaux, tableaux imbriqués, structures, maps
   - [ ] Test : aller-retour complet sur un objet qui contient tous ces types
 - [ ] **Step 7 :** données invalides ou tronquées

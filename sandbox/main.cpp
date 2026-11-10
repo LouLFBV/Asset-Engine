@@ -12,7 +12,8 @@
 #include <AssetEngine/Core/RTTI.h>
 #include <AssetEngine/Security/Checksum.h>
 #include <AssetEngine/Serialization/Serialization.h>
-#include <AssetEngine/Serialization/BinaryArchive.h>
+#include <AssetEngine/Serialization/Binary/BinaryWriter.h>
+#include <AssetEngine/Serialization/Binary/BinaryReader.h>
 #include <AssetEngine/Serialization/JsonArchive.h>
 
 #include <iostream>
