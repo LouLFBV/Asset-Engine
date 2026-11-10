@@ -20,10 +20,10 @@ Chaque step se termine par **un test qui passe, puis un commit sur sa branche**.
   - [x] Test : écrire puis relire un fichier, `Seek` après la fin du fichier
   - [x] Test : un fichier absent est signalé
   - [x] Test : réécrire un fichier remplace son contenu
-- [ ] **Step 4 :** `Serialization/Archive` et `Serialization/Serializers/`, l'archive abstraite et ses règles
-  - [ ] Test : parcours d'une structure avec des tableaux imbriqués
-  - [ ] Test : remplissage d'un `vector` et d'une `map` en chargement
-  - [ ] Test : les concepts acceptent et refusent les bons types
+- [x] **Step 4 :** `Serialization/Archive` et `Serialization/Serializers/`, l'archive abstraite et ses règles
+  - [x] Test : parcours d'une structure avec des tableaux imbriqués
+  - [x] Test : remplissage d'un `vector` et d'une `map` en chargement
+  - [x] Test : les concepts acceptent et refusent les bons types
 
 ### Mardi 10 : archive binaire
 

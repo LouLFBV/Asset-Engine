@@ -11,7 +11,7 @@
 #include <AssetEngine/Core/Log.h>
 #include <AssetEngine/Core/RTTI.h>
 #include <AssetEngine/Security/Checksum.h>
-#include <AssetEngine/Serialization/Archive.h>
+#include <AssetEngine/Serialization/Serialization.h>
 #include <AssetEngine/Serialization/BinaryArchive.h>
 #include <AssetEngine/Serialization/JsonArchive.h>
 
