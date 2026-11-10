@@ -8,4 +8,7 @@ FetchContent_MakeAvailable(Catch2)
 file(GLOB_RECURSE TEST_SOURCES CONFIGURE_DEPENDS *.cpp)
 add_executable(Tests ${TEST_SOURCES})
 target_link_libraries(Tests PRIVATE AssetEngine Catch2::Catch2WithMain)
-add_test(NAME Tests COMMAND Tests)
+# Register each TEST_CASE as its own CTest test, so ctest lists them one by one.
+list(APPEND CMAKE_MODULE_PATH ${catch2_SOURCE_DIR}/extras)
+include(Catch)
+catch_discover_tests(Tests)
