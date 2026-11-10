@@ -85,3 +85,6 @@ x86/
 *.tlog
 *.idb
 *.recipe
+
+# Editor settings, personal to each developer
+.vscode/
