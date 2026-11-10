@@ -139,7 +139,28 @@
     </Manifest>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="AssetManager.cpp" />
+    <ClCompile Include="BinaryArchive.cpp" />
+    <ClCompile Include="Checksum.cpp" />
+    <ClCompile Include="Guid.cpp" />
+    <ClCompile Include="JsonArchive.cpp" />
+    <ClCompile Include="Log.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="MGUI.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Archive.h" />
+    <ClInclude Include="Asset.h" />
+    <ClInclude Include="AssetManager.h" />
+    <ClInclude Include="BinaryArchive.h" />
+    <ClInclude Include="Checksum.h" />
+    <ClInclude Include="Factory.h" />
+    <ClInclude Include="Guid.h" />
+    <ClInclude Include="Job.h" />
+    <ClInclude Include="JobSystem.h" />
+    <ClInclude Include="JsonArchive.h" />
+    <ClInclude Include="MGUI.h" />
+    <ClInclude Include="RTTI.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

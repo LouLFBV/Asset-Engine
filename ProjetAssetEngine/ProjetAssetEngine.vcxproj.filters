@@ -13,10 +13,99 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Fichiers d%27en-tête\Asset">
+      <UniqueIdentifier>{3244e26c-7ab9-430d-adb0-c69e48307b8d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers sources\Asset">
+      <UniqueIdentifier>{5651bd9a-ebe2-475e-ab49-fa028b29fcb3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers d%27en-tête\Core">
+      <UniqueIdentifier>{e57e3a22-1a5d-4464-b2e4-534818716bf8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers sources\Core">
+      <UniqueIdentifier>{dee5f094-7dbd-41ef-8907-ec6a80262ddb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers sources\Security">
+      <UniqueIdentifier>{f6c690f2-423b-435d-9f00-f4fc1bd1bcc5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers d%27en-tête\Security">
+      <UniqueIdentifier>{84a6b87b-1239-4ea5-bcac-6e3ea636b933}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers d%27en-tête\Serialization">
+      <UniqueIdentifier>{5c1d5883-673f-4f8d-90e3-408c399770a6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers sources\Serialization">
+      <UniqueIdentifier>{8ebce6e2-dc22-4d1c-9c1b-b96a74d16c00}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers d%27en-tête\UI">
+      <UniqueIdentifier>{3769001d-6781-4f73-9aae-80dcca3bfa95}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers sources\UI">
+      <UniqueIdentifier>{8cedfdc6-cdd3-496e-abfa-8803e17ea018}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
+    <ClCompile Include="MGUI.cpp">
+      <Filter>Fichiers sources\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="AssetManager.cpp">
+      <Filter>Fichiers sources\Asset</Filter>
+    </ClCompile>
+    <ClCompile Include="BinaryArchive.cpp">
+      <Filter>Fichiers sources\Serialization</Filter>
+    </ClCompile>
+    <ClCompile Include="JsonArchive.cpp">
+      <Filter>Fichiers sources\Serialization</Filter>
+    </ClCompile>
+    <ClCompile Include="Checksum.cpp">
+      <Filter>Fichiers sources\Security</Filter>
+    </ClCompile>
+    <ClCompile Include="Log.cpp">
+      <Filter>Fichiers sources\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Guid.cpp">
+      <Filter>Fichiers sources\Core</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="MGUI.h">
+      <Filter>Fichiers d%27en-tête\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="AssetManager.h">
+      <Filter>Fichiers d%27en-tête\Asset</Filter>
+    </ClInclude>
+    <ClInclude Include="Asset.h">
+      <Filter>Fichiers d%27en-tête\Asset</Filter>
+    </ClInclude>
+    <ClInclude Include="JobSystem.h">
+      <Filter>Fichiers d%27en-tête\Asset</Filter>
+    </ClInclude>
+    <ClInclude Include="Job.h">
+      <Filter>Fichiers d%27en-tête\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="RTTI.h">
+      <Filter>Fichiers d%27en-tête\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Factory.h">
+      <Filter>Fichiers d%27en-tête\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Guid.h">
+      <Filter>Fichiers d%27en-tête\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Checksum.h">
+      <Filter>Fichiers d%27en-tête\Security</Filter>
+    </ClInclude>
+    <ClInclude Include="Archive.h">
+      <Filter>Fichiers d%27en-tête\Serialization</Filter>
+    </ClInclude>
+    <ClInclude Include="BinaryArchive.h">
+      <Filter>Fichiers d%27en-tête\Serialization</Filter>
+    </ClInclude>
+    <ClInclude Include="JsonArchive.h">
+      <Filter>Fichiers d%27en-tête\Serialization</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
