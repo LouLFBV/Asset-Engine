@@ -2,151 +2,107 @@
 
 Période : du **lundi 9 novembre** au **vendredi 20 novembre 2026**, jour du rendu, de la soutenance et du code review.
 
-Une étape n'est terminée que lorsque ses tests passent. A et B correspondent à la répartition de [ARCHITECTURE.md](ARCHITECTURE.md). Les dates sont indicatives.
+Chacun développe le projet complet sur sa branche, puis les deux versions sont comparées à chaque point commun : la meilleure de chaque module est fusionnée dans `dev`.
 
-## Phase 0 : Base commune (lun. 9, à deux)
+Chaque step se termine par **un test qui passe, puis un commit sur sa branche**. Une case se coche dans le commit qui termine le step. Les dates sont indicatives.
 
-- [ ] **Décisions :** répartition, namespace, gestion des erreurs, format `.asset`
-- [x] **`IInputStream` et `IOutputStream`**
+## Semaine 1 : le cœur du projet
 
-## Phase 1 : Fondations (10-12 nov.)
+### Lundi 9 : streams et début des archives
 
-### A : Réflexion
+- [x] **Step 1 :** `Core/IO/IInputStream` et `Core/IO/IOutputStream`, les interfaces de lecture et d'écriture
+- [x] **Step 2 :** `Core/IO/MemoryStream`, lire et écrire en mémoire
+  - [x] Test : écrire puis relire donne les mêmes octets
+  - [x] Test : lire au-delà de la fin renvoie moins d'octets, sans planter
+  - [x] Test : `Size` est juste, `Seek` hors limites est refusé
+  - [x] Test : construire à partir d'octets existants
+- [ ] **Step 3 :** `Core/IO/FileInputStream` et `Core/IO/FileOutputStream`, lire et écrire un fichier
+  - [ ] Test : écrire puis relire un fichier, `Seek` après la fin du fichier
+  - [ ] Test : un fichier absent est signalé
+  - [ ] Test : réécrire un fichier remplace son contenu
+- [ ] **Step 4 :** `Serialization/Archive` et `Serialization/Serializers/`, l'archive abstraite et ses règles
+  - [ ] Test : parcours d'une structure avec des tableaux imbriqués
+  - [ ] Test : remplissage d'un `vector` et d'une `map` en chargement
+  - [ ] Test : les concepts acceptent et refusent les bons types
 
-- [ ] **`TypeId` à la compilation**
-  - [ ] Test : même nom, même id ; noms différents, ids différents
-  - [ ] Test : `static_assert` qui prouve le calcul à la compilation
-- [ ] **`TypeInfo` et `REFLECT`** (nom, version, champs)
-  - [ ] Test : le nom, la version et les champs sont corrects sans créer d'instance
-- [ ] **Héritage multiple**
-  - [ ] Test : la conversion vers la 2ᵉ base donne le bon pointeur
-  - [ ] Test : `IsA` fonctionne à travers plusieurs niveaux
-  - [ ] Test : une base virtuelle en diamant n'est comptée qu'une fois
-- [ ] **`TypeRegistry` et `Factory`**
-  - [ ] Test : un type est déjà enregistré dès l'entrée dans `main`
-  - [ ] Test : enregistrer un type après le gel provoque une erreur
-  - [ ] Test : un `TypeId` inconnu renvoie une erreur
+### Mardi 10 : archive binaire
 
-### B : JSON et intégrité
+- [ ] **Step 5 :** `BinaryArchive`, types primaires et chaînes
+  - [ ] Test : aller-retour, valeurs limites, chaîne vide
+- [ ] **Step 6 :** `BinaryArchive`, tableaux, tableaux imbriqués, structures, maps
+  - [ ] Test : aller-retour complet sur un objet qui contient tous ces types
+- [ ] **Step 7 :** données invalides ou tronquées
+  - [ ] Test : `HasFailed()` sans plantage
 
-- [ ] **`JsonWriter`, `JsonValue` et `JsonParser`**
-  - [ ] Test : chaque type de valeur, y compris les objets et tableaux imbriqués
-  - [ ] Test : parser puis réécrire redonne les mêmes données
-  - [ ] Test : caractères échappés et Unicode
-  - [ ] Test : un JSON invalide renvoie une erreur, sans planter
-- [ ] **`IIntegrityProvider` et `Crc32`**
+### Mercredi 11 : JSON
+
+- [ ] **Step 8 :** lib JSON maison, l'écriture
+  - [ ] Test : chaque type de valeur, imbrication, caractères échappés
+- [ ] **Step 9 :** lib JSON maison, la lecture
+  - [ ] Test : parser puis réécrire, JSON invalide refusé
+- [ ] **Step 10 :** `JsonArchive`
+  - [ ] Test : le même aller-retour que le binaire, sortie en JSON valide
+- [ ] **🤝 Comparaison 1 :** streams et archives, puis fusion de la meilleure version dans `dev`
+
+### Jeudi 12 : réflexion
+
+- [ ] **Step 11 :** `Core/Guid`, l'identifiant de type calculé à la compilation
+  - [ ] Test : même nom, même id, vérifié avec `static_assert`
+- [ ] **Step 12 :** `Core/RTTI`, la description d'un type : nom, version, bases, héritage multiple
+  - [ ] Test : conversion vers la 2ᵉ base, `IsA`, héritage en diamant
+- [ ] **Step 13 :** enregistrement avant `main` et gel du registre
+  - [ ] Test : le type existe dès `main`, un enregistrement tardif est refusé
+- [ ] **Step 14 :** `Core/Factory`
+  - [ ] Test : créer un objet depuis son id, id inconnu refusé
+- [ ] **Step 15 :** types polymorphes dans les archives
+  - [ ] Test : `unique_ptr<Base>` recharge le bon type, pointeur nul
+
+### Vendredi 13 : sécurité
+
+- [ ] **Step 16 :** `Security/Checksum`, le CRC32
   - [ ] Test : `"123456789"` donne `0xCBF43926`
-  - [ ] Test : un octet modifié change le résultat
-- [ ] **`Sha256`**
-  - [ ] Test : vecteurs officiels FIPS 180-4
-- [ ] **`HmacSha256` et `KeyProvider`**
-  - [ ] Test : vecteurs officiels RFC 4231
-  - [ ] Test : une mauvaise clé fait échouer la vérification
+- [ ] **Step 17 :** SHA-256, avec une bibliothèque (consigne du prof, choix à faire)
+  - [ ] Test : vecteurs officiels
+- [ ] **Step 18 :** le hash à clé (HMAC)
+  - [ ] Test : vecteurs officiels, mauvaise clé refusée
+- [ ] **Step 19 :** politique de sécurité selon le contexte, vérification à la lecture
+  - [ ] Test : octet modifié refusé, CRC32 recalculé refusé en contexte HMAC
+- [ ] **🤝 Comparaison 2 :** réflexion et sécurité
 
-## Phase 2 : Archives (12-14 nov.)
+### Samedi 14 : assets
 
-### A
+- [ ] **Step 20 :** `Asset/Asset` et le format `.asset` (header, métadonnées, payload, digest)
+  - [ ] Test : lire les métadonnées sans le payload
+- [ ] **Step 21 :** `Asset/AssetRegistry`
+  - [ ] Test : `Scan()`, recherches, `registry.bin` reconstruit
+- [ ] **Step 22 :** `Asset/AssetManager` en synchrone, avec cache et handle
+  - [ ] Test : deux `Load` donnent la même instance, libération automatique
 
-- [ ] **`IArchive`**, à pousser sur `dev` dès qu'elle est stable
-- [ ] **`MemoryStream`**, à pousser sur `dev` avec `IArchive`
-  - [ ] Test : écrire puis relire donne les mêmes octets
-  - [ ] Test : lire au-delà de la fin renvoie moins d'octets, sans planter
-  - [ ] Test : `Seek` et `Size` donnent les bonnes valeurs
-- [ ] **Concepts et `Serializer<T>`**
-  - [ ] Test : un type non sérialisable ne compile pas (`static_assert` sur le concept)
-- [ ] **`BinaryArchive`**
-  - [ ] Test d'aller-retour : types primaires et valeurs limites, chaînes vides, tableaux vides
-  - [ ] Test d'aller-retour : tableaux imbriqués, structures, `map` et `unordered_map`
-  - [ ] Test : `IsLoading` et `IsSaving` donnent la bonne valeur, à l'exécution et à la compilation
-  - [ ] Test : varint sur `0`, `127`, `128` et la valeur maximale
-  - [ ] Test : un fichier tronqué renvoie une erreur
-- [ ] **Types polymorphes**
-  - [ ] Test : `unique_ptr<Base>` recharge le bon type dérivé
-  - [ ] Test : pointeur nul
-  - [ ] Test : héritage multiple, avec les champs de chaque base
-- [ ] **Versioning**
-  - [ ] Test : un ancien fichier se charge, et les nouveaux champs prennent leur valeur par défaut
-- [ ] **`FileStream`**
-  - [ ] Test : écrire puis relire sur le disque ; un fichier absent renvoie une erreur
+### Dimanche 15 : asynchrone et interface
 
-### B
+- [ ] **Step 23 :** `Asset/JobSystem`
+  - [ ] Test : 1 000 tâches exécutées une seule fois, arrêt propre
+- [ ] **Step 24 :** `LoadAsync` et `Update`
+  - [ ] Test : pas de double chargement, callbacks sur le thread principal
+- [ ] **Step 25 :** interface ImGui simple, dans `editor/`
+  - [ ] Vérification à l'œil
+- [ ] **🤝 Comparaison 3 :** assets et chargement
 
-- [ ] **`TextArchive`**
-  - [ ] Test : le même test d'aller-retour que pour le binaire
-  - [ ] Test : la sortie est du JSON valide
-  - [ ] Test : maps à clé non textuelle, champs de même nom dans deux bases
-- [ ] **`SecurityPolicy` et `SecureStream`**
-  - [ ] Test : un fichier intact se charge
-  - [ ] Test : un octet modifié dans le header, le payload ou le digest est refusé
-  - [ ] Test : un fichier avec un CRC32 recalculé est refusé en contexte HMAC
-  - [ ] Test : aucun octet n'est désérialisé avant la vérification
+## Semaine 2 : finitions et bonus
 
-## Phase 3 : Assets (15-18 nov.)
-
-### A
-
-- [ ] **Format `.asset` et `AssetMetadata`**
-  - [ ] Test : écrire puis relire en binaire et en texte
-  - [ ] Test : magic incorrect ou version inconnue renvoie une erreur
-  - [ ] Test : lire les métadonnées ne lit pas le payload
-- [ ] **`AssetRegistry`**
-  - [ ] Test : `Scan()` trouve tous les assets d'un dossier
-  - [ ] Test : recherche par id, type, tag et nom
-  - [ ] Test : collision d'`AssetId` signalée
-- [ ] **`registry.bin`**
-  - [ ] Test : un registry supprimé se reconstruit à l'identique
-  - [ ] Test : un registry corrompu est refusé puis reconstruit
-
-### B
-
-- [ ] **`JobSystem`**
-  - [ ] Test : 1 000 tâches s'exécutent toutes une seule fois
-  - [ ] Test : l'arrêt se fait proprement, sans blocage
-- [ ] **`IAsset`, `IAssetLoader` et `LoaderRegistry`**
-  - [ ] Test : le bon loader est choisi selon le `TypeId` ; un type inconnu renvoie une erreur
-- [ ] **`AssetHandle` et `AssetCache`**
-  - [ ] Test : deux `Load` donnent la même instance
-  - [ ] Test : l'asset est libéré quand le dernier handle disparaît
-- [ ] **`AssetManager` : `Load`, `LoadAsync`, `Update`, `Unload`, `Save`**
-  - [ ] Test : un `Load` pendant un `LoadAsync` ne charge qu'une fois
-  - [ ] Test : 20 `LoadAsync` simultanés sans doublon ni blocage
-  - [ ] Test : les callbacks s'exécutent sur le thread principal
-  - [ ] Test : un fichier invalide donne l'état `Failed`
-  - [ ] Test : relire l'asset sauvegardé avec `Save` donne le même objet
-
-## Phase 4 : Interface et démo (18-19 nov., à deux)
-
-- [ ] **Types de démo dans `sandbox/`** : `TextureAsset`, `MeshAsset`, `ConfigAsset`
-  - [ ] Test : ils fonctionnent sans modifier `engine/`
-- [ ] **Scénario complet dans le Sandbox** : créer, sauvegarder, chercher, charger
-- [ ] **ImGui** : Asset Browser, Inspector, Archive Viewer, panneau Ressources
-  - [ ] Vérification à l'œil, en suivant une liste de contrôle
-- [ ] **Si le temps le permet :** chargement automatique des dépendances
-  - [ ] Test : les dépendances se chargent avant l'asset ; un cycle est détecté
-
-## Phase 5 : Rendu (19-20 nov.)
-
-- [ ] **Passes de contrôle**
-  - [ ] Tous les tests passent en Debug et en Release
-  - [ ] AddressSanitizer pour les erreurs mémoire
-  - [ ] Build et tests depuis un clone neuf
-  - [ ] Supprimer les `.gitkeep`, `AssetEngine.cpp` et `Smoke.cpp`
-- [ ] **Documents**
-  - [ ] README et `ARCHITECTURE.md` à jour, diagramme à jour
-  - [ ] Questions au prof réglées
-- [ ] **Rendu**
-  - [ ] Fusion de `dev` dans `main`
-  - [ ] Migration vers le GitHub de l'école
-- [ ] **Soutenance**
-  - [ ] Slides, répétition en 15 minutes (3 + 5 + 5 + 2)
-  - [ ] Revoir ensemble le code de l'autre pour le code review
+- [ ] **Step 26 :** démo complète dans le Sandbox, avec des types d'assets d'exemple
+- [ ] **Step 27 :** finaliser l'interface ImGui, qui vaut 5 points
+- [ ] **Step 28 :** bonus au choix : mesures de performance, dépendances entre assets, versioning avancé
+- [ ] **Step 29 :** contrôle final : Debug et Release, clone neuf, nettoyage des fichiers temporaires
+- [ ] **Step 30 :** documents à jour, diagramme, fusion dans `main` et migration vers le GitHub de l'école
+- [ ] **Step 31 :** slides et répétition en 15 minutes (3 + 5 + 5 + 2)
 
 ## Le minimum à sécuriser
 
 En cas de retard, ces éléments passent en priorité, car le cahier des charges les demande explicitement :
 
 - les archives binaire et texte, avec tous leurs types ;
-- le checksum et le HMAC ;
+- le checksum et le hash à clé ;
 - le registry ;
 - le chargement synchrone et asynchrone ;
 - une interface ImGui simple.
