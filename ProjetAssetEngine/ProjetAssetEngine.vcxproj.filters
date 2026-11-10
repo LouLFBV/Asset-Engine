@@ -69,6 +69,12 @@
     <ClCompile Include="Guid.cpp">
       <Filter>Fichiers sources\Core</Filter>
     </ClCompile>
+    <ClCompile Include="Pawn.cpp">
+      <Filter>Fichiers sources\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Archive.cpp">
+      <Filter>Fichiers sources\Serialization</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MGUI.h">
@@ -83,7 +89,7 @@
     <ClInclude Include="JobSystem.h">
       <Filter>Fichiers d%27en-tête\Asset</Filter>
     </ClInclude>
-    <ClInclude Include="Job.h">
+    <ClInclude Include="Log.h">
       <Filter>Fichiers d%27en-tête\Core</Filter>
     </ClInclude>
     <ClInclude Include="RTTI.h">
@@ -106,6 +112,12 @@
     </ClInclude>
     <ClInclude Include="JsonArchive.h">
       <Filter>Fichiers d%27en-tête\Serialization</Filter>
+    </ClInclude>
+    <ClInclude Include="json.h">
+      <Filter>Fichiers d%27en-tête\Serialization</Filter>
+    </ClInclude>
+    <ClInclude Include="Pawn.h">
+      <Filter>Fichiers d%27en-tête\Core</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -139,6 +139,7 @@
     </Manifest>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Archive.cpp" />
     <ClCompile Include="AssetManager.cpp" />
     <ClCompile Include="BinaryArchive.cpp" />
     <ClCompile Include="Checksum.cpp" />
@@ -147,6 +148,7 @@
     <ClCompile Include="Log.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MGUI.cpp" />
+    <ClCompile Include="Pawn.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Archive.h" />
@@ -156,10 +158,12 @@
     <ClInclude Include="Checksum.h" />
     <ClInclude Include="Factory.h" />
     <ClInclude Include="Guid.h" />
-    <ClInclude Include="Job.h" />
+    <ClInclude Include="Log.h" />
     <ClInclude Include="JobSystem.h" />
+    <ClInclude Include="json.h" />
     <ClInclude Include="JsonArchive.h" />
     <ClInclude Include="MGUI.h" />
+    <ClInclude Include="Pawn.h" />
     <ClInclude Include="RTTI.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

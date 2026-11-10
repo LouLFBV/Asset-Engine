@@ -1,12 +1,16 @@
 #pragma once
-
 #include <string>
-#include <memory>
+
+// Déclaration anticipée de la classe de base dont toutes tes classes vont hériter
+class RTTI;
 
 struct Asset {
+    std::string uiid;
+    std::string path;
 
-	std::string uiid; // pour asset
-	char* path;
-	//Pawn* objet; //s'il est load (un ptr),
-	//et type RTTI (classe)
+    // "type RTTI (classe)" : la string qui permet de retrouver la classe dans le registre
+    std::string type;
+
+    // "objet s'il est load (un ptr)" : pointeur vers la classe de base
+    RTTI* objet = nullptr;
 };
