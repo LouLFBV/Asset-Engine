@@ -16,10 +16,10 @@ Chaque step se termine par **un test qui passe, puis un commit sur sa branche**.
   - [x] Test : lire au-delà de la fin renvoie moins d'octets, sans planter
   - [x] Test : `Size` est juste, `Seek` hors limites est refusé
   - [x] Test : construire à partir d'octets existants
-- [ ] **Step 3 :** `Core/IO/FileInputStream` et `Core/IO/FileOutputStream`, lire et écrire un fichier
-  - [ ] Test : écrire puis relire un fichier, `Seek` après la fin du fichier
-  - [ ] Test : un fichier absent est signalé
-  - [ ] Test : réécrire un fichier remplace son contenu
+- [x] **Step 3 :** `Core/IO/FileInputStream` et `Core/IO/FileOutputStream`, lire et écrire un fichier
+  - [x] Test : écrire puis relire un fichier, `Seek` après la fin du fichier
+  - [x] Test : un fichier absent est signalé
+  - [x] Test : réécrire un fichier remplace son contenu
 - [ ] **Step 4 :** `Serialization/Archive` et `Serialization/Serializers/`, l'archive abstraite et ses règles
   - [ ] Test : parcours d'une structure avec des tableaux imbriqués
   - [ ] Test : remplissage d'un `vector` et d'une `map` en chargement

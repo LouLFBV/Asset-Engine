@@ -6,6 +6,8 @@
 #include <AssetEngine/Core/IO/IInputStream.h>
 #include <AssetEngine/Core/IO/IOutputStream.h>
 #include <AssetEngine/Core/IO/MemoryStream.h>
+#include <AssetEngine/Core/IO/FileInputStream.h>
+#include <AssetEngine/Core/IO/FileOutputStream.h>
 #include <AssetEngine/Core/Log.h>
 #include <AssetEngine/Core/RTTI.h>
 #include <AssetEngine/Security/Checksum.h>
