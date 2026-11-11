@@ -14,7 +14,11 @@
 #include <AssetEngine/Serialization/Serialization.h>
 #include <AssetEngine/Serialization/Binary/BinaryWriter.h>
 #include <AssetEngine/Serialization/Binary/BinaryReader.h>
-#include <AssetEngine/Serialization/JsonArchive.h>
+#include <AssetEngine/Serialization/Json/JsonParser.h>
+#include <AssetEngine/Serialization/Json/JsonPrinter.h>
+#include <AssetEngine/Serialization/Json/JsonReader.h>
+#include <AssetEngine/Serialization/Json/JsonValue.h>
+#include <AssetEngine/Serialization/Json/JsonWriter.h>
 
 #include <iostream>
 

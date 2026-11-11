@@ -40,8 +40,8 @@ Chaque step se termine par **un test qui passe, puis un commit sur sa branche**.
   - [x] Test : chaque type de valeur, imbrication, caractères échappés
 - [x] **Step 9 :** lib JSON maison, la lecture
   - [x] Test : parser puis réécrire, JSON invalide refusé
-- [ ] **Step 10 :** `JsonWriter` et `JsonReader`, les archives JSON
-  - [ ] Test : le même aller-retour que le binaire, sortie en JSON valide
+- [x] **Step 10 :** `JsonWriter` et `JsonReader`, les archives JSON
+  - [x] Test : le même aller-retour que le binaire, sortie en JSON valide
 - [ ] **🤝 Comparaison 1 :** streams et archives, puis fusion de la meilleure version dans `dev`
 
 ### Jeudi 12 : réflexion
