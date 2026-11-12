@@ -144,6 +144,7 @@
     <ClCompile Include="BinaryArchive.cpp" />
     <ClCompile Include="Checksum.cpp" />
     <ClCompile Include="Guid.cpp" />
+    <ClCompile Include="JobSystem.cpp" />
     <ClCompile Include="JsonArchive.cpp" />
     <ClCompile Include="Log.cpp" />
     <ClCompile Include="main.cpp" />

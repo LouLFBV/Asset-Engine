@@ -53,7 +53,6 @@ void Log::Print(LogLevel level, const std::string& message) {
     std::string formattedMessage = std::string("[") + timeBuffer + "] [" + levelStr + "] " + message;
 
     {
-        // Si tu utilises le mutex, assure-toi qu'il s'appelle bien s_Mutex dans ton .h (et non s_Mutex sans s ou autre)
         // std::lock_guard<std::mutex> lock(s_Mutex);
 
         std::cout << colorCode << formattedMessage << resetColor << std::endl;

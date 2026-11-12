@@ -75,6 +75,9 @@
     <ClCompile Include="Archive.cpp">
       <Filter>Fichiers sources\Serialization</Filter>
     </ClCompile>
+    <ClCompile Include="JobSystem.cpp">
+      <Filter>Fichiers sources\Asset</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MGUI.h">

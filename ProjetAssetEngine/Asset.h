@@ -5,6 +5,7 @@
 class RTTI;
 
 struct Asset {
+	uint32_t checksum = 0; // Pour vérifier l'intégrité du fichier
     std::string uiid;
     std::string path;
 
