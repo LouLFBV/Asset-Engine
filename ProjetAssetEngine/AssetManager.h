@@ -1,5 +1,6 @@
 #pragma once
-#include <unordered_map>
+#include <set>
+#include <xhash>
 #include <chrono>
 #include "Asset.h"
 #include "Factory.h"
@@ -7,21 +8,24 @@
 #include "RTTI.h"
 #include "JobSystem.h"
 
+struct Guid;
+
 class AssetManager {
 private:
     JobSystem m_assetJobSystem;
-    std::unordered_map<std::string, Asset*> m_assetTree;
+    std::unordered_map<Guid, Asset*> m_assetTree;
 
     // Le conteneur secret pour ne pas faire lagger le jeu !
     // Il associe l'UUID de l'asset à sa tâche de chargement en arrière-plan.
-    std::unordered_map<std::string, Job> m_loadingTasks;
+    std::set<Guid> m_loadingTasks;
 
 public:
+    AssetManager();
+    ~AssetManager() = default;
     void LoadSync(Asset* asset);
 
     //ASYNCHRONE (Ne bloque pas le jeu)
     void LoadAsync(Asset* asset);
 
-    // MISE A JOUR (A appeler à chaque frame dans ton jeu)
-    void Update();
+    JobSystem& GetJobSystem();
 };

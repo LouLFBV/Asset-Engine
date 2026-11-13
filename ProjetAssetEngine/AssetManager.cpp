@@ -2,6 +2,9 @@
 #include "Checksum.h"
 #include "Log.h"
 
+AssetManager::AssetManager() = default;
+
+
 void AssetManager::LoadSync(Asset* asset) {
     if (asset == nullptr || asset->objet != nullptr) return;
 
@@ -19,6 +22,7 @@ void AssetManager::LoadSync(Asset* asset) {
         JsonArchive archive(asset->path, ArchiveDirection::Read);
         asset->objet->Process(archive);
     }
+    m_loadingTasks.erase(asset->uiid);
 }
 
 //ASYNCHRONE (Ne bloque pas le jeu)
@@ -31,25 +35,12 @@ void AssetManager::LoadAsync(Asset* asset) {
     if (m_loadingTasks.find(asset->uiid) != m_loadingTasks.end()) {
         return;
     }
+    m_loadingTasks.emplace(asset->uiid);
 
-    // 2. On lance le thread ET ON STOCKE LE RETOUR dans la map
-    // std::launch::async force la création d'un vrai thread séparé
-     m_assetJobSystem.Submit(m_loadingTasks[asset->uiid]);
+    m_assetJobSystem.Submit([this, asset]() {LoadSync(asset); });
 }
 
-// MISE A JOUR (A appeler à chaque frame dans ton jeu)
-void AssetManager::Update() {
-    // On parcourt les chargements en cours pour nettoyer ceux qui ont fini
-    for (auto it = m_loadingTasks.begin(); it != m_loadingTasks.end(); ) {
-
-        // On demande l'état du thread avec un délai d'attente de 0 seconde (donc ça ne bloque pas)
-        if (it->second.wait_for(std::chrono::seconds(0)) == std::future_status::ready) {
-            // Le chargement est terminé ! On retire la tâche de la liste.
-            it = m_loadingTasks.erase(it);
-        }
-        else {
-            // Toujours en cours de chargement, on passe au suivant.
-            ++it;
-        }
-    }
+JobSystem& AssetManager::GetJobSystem()
+{
+    return m_assetJobSystem;
 }

@@ -1,4 +1,5 @@
 #include "JobSystem.h"
+#include <iostream>
 
 JobSystem::JobSystem(int threads)
 {
@@ -55,7 +56,6 @@ void JobSystem::WorkerLoop() {
 		}
 		job();
 		std::lock_guard<std::mutex> lock(jb_mutex);
-		if (jb_pending == 0) jb_cvIdle.notify_all(); // Tout est fini
+		if (--jb_pending == 0) jb_cvIdle.notify_all(); // Tout est fini
 	}
 }
-

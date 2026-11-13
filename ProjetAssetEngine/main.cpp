@@ -1,99 +1,106 @@
 #include <iostream>
-#include <fstream>
+#include <thread>
 #include "Log.h"
 #include "Checksum.h"
 #include "JsonArchive.h"
+#include "JobSystem.h"
 #include "AssetManager.h"
 #include "Pawn.h"
 
 int main() {
-    // 1. Initialiser le système de Log centralisé
-    Log::Init("engine_test.log");
-    LOG_INFO("=== DEBUT DU TEST GLOBAL DU MOTEUR ===");
+    //assert(0 == 1);
+    // 1. Initialisation du Log
+    Log::Init("engine_job_test.log");
+    LOG_INFO("=== DEBUT DU TEST AVEC JOBSYSTEM ===");
 
-    const std::string filepath = "pawn_test_data.json";
+    // 2. Démarrage du JobSystem (ex: avec tous les cœurs disponibles du CPU)
+    int numThreads = std::max(2u, std::thread::hardware_concurrency());
+    LOG_INFO("Demarrage du JobSystem avec " + std::to_string(numThreads) + " threads workers.");
 
-    // 2. Création d'un fichier de données valide sur le disque
+    // 3. Initialisation de l'AssetManager en lui injectant le JobSystem
+    // (Adapte cette ligne selon la façon dont tu passes ton JobSystem à l'AssetManager)
+    AssetManager assetManager{};
+
+    const std::string filepath = "pawn_job_test.json";
+
+    // 4. Création d'un fichier de sauvegarde valide sur le disque
     {
-        LOG_INFO("Creation du fichier de sauvegarde valide...");
-        Pawn originalPawn;
-        originalPawn.health = 90;
-        originalPawn.speed = 12.5f;
-        originalPawn.inventory = { 101, 202, 303 };
-        originalPawn.stats["Strength"] = 40;
+        LOG_INFO("Creation du fichier de test valide...");
+        Pawn hero;
+        hero.health = 100;
+        hero.speed = 15.0f;
+        hero.inventory = { 7, 77, 777 };
+        hero.stats["Agility"] = 50;
 
-        // Arme polymorphe
-        Weapon* sword = new Weapon();
-        sword->damage = 60;
-        originalPawn.equippedWeapon = sword;
+        Weapon* bow = new Weapon();
+        bow->damage = 45;
+        hero.equippedWeapon = bow;
 
         JsonArchive writer(filepath, ArchiveDirection::Write);
-        originalPawn.Process(writer);
+        hero.Process(writer);
     }
 
-    // 3. Préparer l'Asset Manager et l'Asset
-    AssetManager manager;
-    Asset myHeroAsset;
-    myHeroAsset.uiid = "hero_player_1";
-    myHeroAsset.path = filepath;
-    myHeroAsset.type = "Pawn";
-    myHeroAsset.objet = nullptr;
+    // 5. Configuration de l'Asset
+    Asset heroAsset;
+    heroAsset.uiid = heroAsset.uiid.Generate();
+    heroAsset.path = filepath;
+    heroAsset.type = "Pawn";
+    heroAsset.objet = nullptr;
+    heroAsset.checksum = Checksum::ComputeFromFile(filepath);
 
-    // Calcul et stockage du checksum initial (sécurité)
-    myHeroAsset.checksum = Checksum::ComputeFromFile(filepath);
-    LOG_INFO("Checksum calcule et enregistre pour l'asset : " + std::to_string(myHeroAsset.checksum));
+    // 6. Test du chargement Asynchrone via le JobSystem
+    LOG_INFO("Lancement du chargement ASYNCHRONE via le JobSystem...");
+    assetManager.LoadAsync(&heroAsset);
 
-    // 4. Test du chargement Asynchrone (avec la boucle de jeu / Update)
-    LOG_INFO("Lancement du chargement ASYNCHRONE...");
-    manager.LoadAsync(&myHeroAsset);
+    // Simulation de la boucle de jeu ou attente active que le JobSystem termine
+    LOG_INFO("Le jeu continue de tourner pendant que les threads travaillent...");
 
-    bool isRunning = true;
-    int frameCount = 0;
+    // Tu peux soit utiliser jobSystem.WaitIdle() pour attendre que tous les jobs soient finis :
+    assetManager.GetJobSystem().WaitIdle();
 
-    // Simulation d'une boucle de jeu à 60 FPS
-    while (isRunning && frameCount < 100) {
-        // Mise à jour des tâches en arrière-plan
-        manager.Update();
-
-        if (myHeroAsset.objet != nullptr) {
-            LOG_INFO("Asset charge avec succes en asynchrone ! Affichage :");
-
-            // Cast sécurisé pour afficher les données du Pawn
-            Pawn* loadedPawn = dynamic_cast<Pawn*>(myHeroAsset.objet);
-            if (loadedPawn) {
-                loadedPawn->Print();
-            }
-
-            isRunning = false; // On arrête la boucle de test de chargement
-        }
-        else {
-            // Le jeu continue de tourner sans freeze
-            frameCount++;
+    // 7. Vérification du résultat
+    if (heroAsset.objet != nullptr) {
+        LOG_INFO("Chargement termine avec succes par le pool de threads ! Affichage :");
+        Pawn* loadedHero = dynamic_cast<Pawn*>(heroAsset.objet);
+        if (loadedHero) {
+            loadedHero->Print();
         }
     }
+    else {
+        LOG_ERROR("Erreur : L'asset n'a pas pu être chargé.");
+    }
 
-    // 5. Test ultime : La sécurité du Checksum face à une corruption
-    LOG_INFO("--- TEST DE SECURITE : Corruption du fichier ---");
+    // 8. Test de sécurité du Checksum sur un fichier corrompu
+    LOG_INFO("--- TEST DE SECURITE : Fichier corrompu ---");
     {
-        // On écrit de force dans le fichier pour modifier son contenu et fausser son empreinte
-        std::ofstream corruptFile(filepath, std::ios::app);
-        corruptFile << "\n// Fichier corrompu par un tiers";
+        std::ofstream corrupt(filepath, std::ios::app);
+        corrupt << "\n// Corruption volontaire";
     }
 
-    // On crée un deuxième asset pointant vers ce fichier corrompu
-    Asset corruptedAsset;
-    corruptedAsset.uiid = "hero_corrupt";
-    corruptedAsset.path = filepath;
-    corruptedAsset.type = "Pawn";
-    corruptedAsset.objet = nullptr;
-    corruptedAsset.checksum = myHeroAsset.checksum; // On garde l'ancien checksum valide
+    Asset corruptAsset;
+    corruptAsset.uiid = corruptAsset.uiid.Generate();
+    corruptAsset.path = filepath;
+    corruptAsset.type = "Pawn";
+    corruptAsset.objet = nullptr;
+    corruptAsset.checksum = heroAsset.checksum; // Ancien checksum valide
 
-    LOG_INFO("Tentative de chargement du fichier corrompu (doit declencher une erreur de Checksum)...");
-    manager.LoadSync(&corruptedAsset); // Doit échouer et afficher LOG_ERROR dans la console
+    // Tentative de chargement synchrone (doit bloquer et logger une erreur)
+    assetManager.LoadSync(&corruptAsset);
 
-    // 6. Fermeture propre du moteur
-    LOG_INFO("=== FIN DU TEST GLOBAL AVEC SUCCES ===");
+    // 9. Fermeture propre du moteur
+    LOG_INFO("=== FIN DU TEST JOBSYSTEM AVEC SUCCES ===");
     Log::Shutdown();
+    //{
+    //    Guid key{};
+    //    // es ce que tu est hashable ? non throw oui je prend le hash
+    //    using ghash = std::hash<Guid>;
+    //    std::size_t id = ghash::operator()(key);
 
+
+
+
+    //}
+    
+    // Le destructeur de jobSystem s'exécutera ici, fermant proprement les threads workers.
     return 0;
 }

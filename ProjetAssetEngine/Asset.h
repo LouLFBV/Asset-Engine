@@ -1,12 +1,14 @@
 #pragma once
 #include <string>
 
+#include "Guid.h"
+
 // Déclaration anticipée de la classe de base dont toutes tes classes vont hériter
 class RTTI;
 
 struct Asset {
 	uint32_t checksum = 0; // Pour vérifier l'intégrité du fichier
-    std::string uiid;
+    Guid uiid;
     std::string path;
 
     // "type RTTI (classe)" : la string qui permet de retrouver la classe dans le registre
