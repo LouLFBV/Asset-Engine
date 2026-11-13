@@ -50,8 +50,8 @@ Chaque step se termine par **un test qui passe, puis un commit sur sa branche**.
   - [x] Test : même nom, même id, vérifié avec `static_assert`
 - [x] **Step 12 :** `Core/Reflection/TypeInfo`, la description d'un type : nom, version, bases, héritage multiple
   - [x] Test : conversion vers la 2ᵉ base, `IsA`, héritage en diamant
-- [ ] **Step 13 :** enregistrement avant `main` et gel du registre
-  - [ ] Test : le type existe dès `main`, un enregistrement tardif est refusé
+- [x] **Step 13 :** enregistrement avant `main` et gel du registre
+  - [x] Test : le type existe dès `main`, un enregistrement tardif est refusé
 - [ ] **Step 14 :** `Core/Factory`
   - [ ] Test : créer un objet depuis son id, id inconnu refusé
 - [ ] **Step 15 :** types polymorphes dans les archives
