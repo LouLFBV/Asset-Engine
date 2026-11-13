@@ -31,8 +31,8 @@ Chaque step se termine par **un test qui passe, puis un commit sur sa branche**.
   - [x] Test : aller-retour, valeurs limites, chaîne vide
 - [x] **Step 6 :** `BinaryArchive`, tableaux, tableaux imbriqués, structures, maps
   - [x] Test : aller-retour complet sur un objet qui contient tous ces types
-- [ ] **Step 7 :** données invalides ou tronquées
-  - [ ] Test : `HasFailed()` sans plantage
+- [x] **Step 7 :** données invalides ou tronquées
+  - [x] Test : `HasFailed()` sans plantage
 
 ### Mercredi 11 : JSON
 
