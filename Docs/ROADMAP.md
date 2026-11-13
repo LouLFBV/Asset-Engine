@@ -54,8 +54,8 @@ Chaque step se termine par **un test qui passe, puis un commit sur sa branche**.
   - [x] Test : le type existe dès `main`, un enregistrement tardif est refusé
 - [x] **Step 14 :** `Core/Reflection/Factory`
   - [x] Test : créer un objet depuis son id, id inconnu refusé
-- [ ] **Step 15 :** types polymorphes dans les archives
-  - [ ] Test : `unique_ptr<Base>` recharge le bon type, pointeur nul
+- [x] **Step 15 :** types polymorphes dans les archives
+  - [x] Test : `unique_ptr<Base>` recharge le bon type, pointeur nul
 
 ### Vendredi 13 : sécurité
 

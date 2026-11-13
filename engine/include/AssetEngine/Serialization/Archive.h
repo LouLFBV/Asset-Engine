@@ -60,6 +60,9 @@ namespace AssetEngine
 		bool HasFailed() const { return m_error != ArchiveError::None; }
 
 	protected:
+		// The serializers may report an error, for example an unknown type.
+		template <typename> friend struct Serializer;
+
 		void Fail(ArchiveError error)
 		{
 			if (m_error == ArchiveError::None)

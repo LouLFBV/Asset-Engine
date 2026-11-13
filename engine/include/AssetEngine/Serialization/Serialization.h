@@ -4,5 +4,6 @@
 #include <AssetEngine/Serialization/Archive.h>
 #include <AssetEngine/Serialization/Serializers/MapSerializer.h>
 #include <AssetEngine/Serialization/Serializers/ObjectSerializer.h>
+#include <AssetEngine/Serialization/Serializers/PointerSerializer.h>
 #include <AssetEngine/Serialization/Serializers/PrimitiveSerializer.h>
 #include <AssetEngine/Serialization/Serializers/VectorSerializer.h>
