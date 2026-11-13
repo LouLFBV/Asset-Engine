@@ -10,7 +10,8 @@
 #include <AssetEngine/Core/IO/FileInputStream.h>
 #include <AssetEngine/Core/IO/FileOutputStream.h>
 #include <AssetEngine/Core/Log.h>
-#include <AssetEngine/Core/RTTI.h>
+#include <AssetEngine/Core/Reflection/Reflect.h>
+#include <AssetEngine/Core/Reflection/TypeInfo.h>
 #include <AssetEngine/Security/Checksum.h>
 #include <AssetEngine/Serialization/Serialization.h>
 #include <AssetEngine/Serialization/Binary/BinaryWriter.h>

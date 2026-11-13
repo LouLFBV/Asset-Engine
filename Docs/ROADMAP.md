@@ -48,8 +48,8 @@ Chaque step se termine par **un test qui passe, puis un commit sur sa branche**.
 
 - [x] **Step 11 :** `Core/Reflection/TypeId`, l'identifiant de type calculé à la compilation
   - [x] Test : même nom, même id, vérifié avec `static_assert`
-- [ ] **Step 12 :** `Core/RTTI`, la description d'un type : nom, version, bases, héritage multiple
-  - [ ] Test : conversion vers la 2ᵉ base, `IsA`, héritage en diamant
+- [x] **Step 12 :** `Core/Reflection/TypeInfo`, la description d'un type : nom, version, bases, héritage multiple
+  - [x] Test : conversion vers la 2ᵉ base, `IsA`, héritage en diamant
 - [ ] **Step 13 :** enregistrement avant `main` et gel du registre
   - [ ] Test : le type existe dès `main`, un enregistrement tardif est refusé
 - [ ] **Step 14 :** `Core/Factory`
