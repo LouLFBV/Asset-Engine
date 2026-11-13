@@ -1,7 +1,7 @@
 #include <AssetEngine/Asset/Asset.h>
 #include <AssetEngine/Asset/AssetManager.h>
 #include <AssetEngine/Asset/JobSystem.h>
-#include <AssetEngine/Core/Factory.h>
+#include <AssetEngine/Core/Reflection/Factory.h>
 #include <AssetEngine/Core/Hash.h>
 #include <AssetEngine/Core/Reflection/TypeId.h>
 #include <AssetEngine/Core/IO/IInputStream.h>
