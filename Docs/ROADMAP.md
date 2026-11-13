@@ -46,8 +46,8 @@ Chaque step se termine par **un test qui passe, puis un commit sur sa branche**.
 
 ### Jeudi 12 : réflexion
 
-- [ ] **Step 11 :** `Core/Guid`, l'identifiant de type calculé à la compilation
-  - [ ] Test : même nom, même id, vérifié avec `static_assert`
+- [x] **Step 11 :** `Core/Reflection/TypeId`, l'identifiant de type calculé à la compilation
+  - [x] Test : même nom, même id, vérifié avec `static_assert`
 - [ ] **Step 12 :** `Core/RTTI`, la description d'un type : nom, version, bases, héritage multiple
   - [ ] Test : conversion vers la 2ᵉ base, `IsA`, héritage en diamant
 - [ ] **Step 13 :** enregistrement avant `main` et gel du registre
