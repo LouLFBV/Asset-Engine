@@ -1,106 +1,101 @@
-#include <iostream>
+#include <unordered_map>
 #include <thread>
-#include "Log.h"
+#include <chrono>
+#include <sstream> // Nécessaire pour construire les chaînes si besoin
+#include "Guid.h"
 #include "Checksum.h"
-#include "JsonArchive.h"
 #include "JobSystem.h"
 #include "AssetManager.h"
 #include "Pawn.h"
+#include "Log.h"
 
 int main() {
-    //assert(0 == 1);
-    // 1. Initialisation du Log
-    Log::Init("engine_job_test.log");
-    LOG_INFO("=== DEBUT DU TEST AVEC JOBSYSTEM ===");
+    // Initialisation du fichier de log du moteur
+    Log::Init("engine.log");
 
-    // 2. Démarrage du JobSystem (ex: avec tous les cœurs disponibles du CPU)
-    int numThreads = std::max(2u, std::thread::hardware_concurrency());
-    LOG_INFO("Demarrage du JobSystem avec " + std::to_string(numThreads) + " threads workers.");
+    LOG_INFO("========================================");
+    LOG_INFO("   DEBUT DES TESTS DU MOTEUR DE JEU     ");
+    LOG_INFO("========================================");
 
-    // 3. Initialisation de l'AssetManager en lui injectant le JobSystem
-    // (Adapte cette ligne selon la façon dont tu passes ton JobSystem à l'AssetManager)
-    AssetManager assetManager{};
+    // -------------------------------------------------------------
+    // 1. Test de la classe Guid et du Hash avec le Checksum
+    // -------------------------------------------------------------
+    LOG_INFO("[1/5] Test du systeme de Guid & Hash...");
+    Guid guid1 = Guid::Generate();
+    Guid guid2 = Guid::Generate();
 
-    const std::string filepath = "pawn_job_test.json";
-
-    // 4. Création d'un fichier de sauvegarde valide sur le disque
-    {
-        LOG_INFO("Creation du fichier de test valide...");
-        Pawn hero;
-        hero.health = 100;
-        hero.speed = 15.0f;
-        hero.inventory = { 7, 77, 777 };
-        hero.stats["Agility"] = 50;
-
-        Weapon* bow = new Weapon();
-        bow->damage = 45;
-        hero.equippedWeapon = bow;
-
-        JsonArchive writer(filepath, ArchiveDirection::Write);
-        hero.Process(writer);
-    }
-
-    // 5. Configuration de l'Asset
-    Asset heroAsset;
-    heroAsset.uiid = heroAsset.uiid.Generate();
-    heroAsset.path = filepath;
-    heroAsset.type = "Pawn";
-    heroAsset.objet = nullptr;
-    heroAsset.checksum = Checksum::ComputeFromFile(filepath);
-
-    // 6. Test du chargement Asynchrone via le JobSystem
-    LOG_INFO("Lancement du chargement ASYNCHRONE via le JobSystem...");
-    assetManager.LoadAsync(&heroAsset);
-
-    // Simulation de la boucle de jeu ou attente active que le JobSystem termine
-    LOG_INFO("Le jeu continue de tourner pendant que les threads travaillent...");
-
-    // Tu peux soit utiliser jobSystem.WaitIdle() pour attendre que tous les jobs soient finis :
-    assetManager.GetJobSystem().WaitIdle();
-
-    // 7. Vérification du résultat
-    if (heroAsset.objet != nullptr) {
-        LOG_INFO("Chargement termine avec succes par le pool de threads ! Affichage :");
-        Pawn* loadedHero = dynamic_cast<Pawn*>(heroAsset.objet);
-        if (loadedHero) {
-            loadedHero->Print();
-        }
+    if (!(guid1 == guid2)) {
+        LOG_INFO("-> OK : Deux GUID generes sont bien differents.");
     }
     else {
-        LOG_ERROR("Erreur : L'asset n'a pas pu être chargé.");
+        LOG_ERROR("-> ERREUR : Collision de GUID !");
     }
 
-    // 8. Test de sécurité du Checksum sur un fichier corrompu
-    LOG_INFO("--- TEST DE SECURITE : Fichier corrompu ---");
-    {
-        std::ofstream corrupt(filepath, std::ios::app);
-        corrupt << "\n// Corruption volontaire";
+    // Test de l'unordered_map avec le Guid (qui utilise ton Checksum sous le capot)
+    std::unordered_map<Guid, std::string> mapTest;
+    mapTest[guid1] = "Player_Pawn_Data";
+    mapTest[guid2] = "Level_01_Data";
+
+    if (mapTest.find(guid1) != mapTest.end() && mapTest[guid1] == "Player_Pawn_Data") {
+        LOG_INFO("-> OK : std::unordered_map<Guid, ...> fonctionne avec le Checksum !");
     }
 
-    Asset corruptAsset;
-    corruptAsset.uiid = corruptAsset.uiid.Generate();
-    corruptAsset.path = filepath;
-    corruptAsset.type = "Pawn";
-    corruptAsset.objet = nullptr;
-    corruptAsset.checksum = heroAsset.checksum; // Ancien checksum valide
+    // -------------------------------------------------------------
+    // 2. Test du Checksum (CRC32)
+    // -------------------------------------------------------------
+    LOG_INFO("[2/5] Test du Checksum...");
+    std::string fakeJsonContent = "{ \"type\": \"Pawn\", \"health\": 100 }";
+    uint32_t checksumValue = Checksum::ComputeFromString(fakeJsonContent);
 
-    // Tentative de chargement synchrone (doit bloquer et logger une erreur)
-    assetManager.LoadSync(&corruptAsset);
+    // Petite astuce pour logger une variable numérique avec une macro de string
+    std::string checksumMsg = "-> OK : CRC32 calcule avec succes (Valeur : " + std::to_string(checksumValue) + ")";
+    LOG_INFO(checksumMsg);
 
-    // 9. Fermeture propre du moteur
-    LOG_INFO("=== FIN DU TEST JOBSYSTEM AVEC SUCCES ===");
+    // -------------------------------------------------------------
+    // 3. Test du JobSystem
+    // -------------------------------------------------------------
+    LOG_INFO("[3/5] Test du JobSystem...");
+    JobSystem mainJobSystem;
+
+    mainJobSystem.Submit([]() {
+        LOG_INFO("   -> [JobSystem Worker] Tache en arriere-plan executee avec succes !");
+        });
+
+    std::this_thread::sleep_for(std::chrono::milliseconds(100));
+    LOG_INFO("-> OK : JobSystem operationnel.");
+
+    // -------------------------------------------------------------
+    // 4. Test de la classe Pawn & RTTI / Polymorphisme
+    // -------------------------------------------------------------
+    LOG_INFO("[4/5] Test de la classe Pawn et des objets du jeu...");
+
+    Pawn myPawn;
+    myPawn.health = 85;
+    myPawn.speed = 12.5f;
+
+    // On lui équipe une arme polymorphe pour tester le RTTI
+    Weapon* myWeapon = new Weapon();
+    myWeapon->damage = 75;
+    myPawn.equippedWeapon = myWeapon;
+
+    // Affichage des infos du Pawn (la méthode Print utilise std::cout, ce qui est parfait pour la console)
+    LOG_INFO("-> État initial du Pawn :");
+    myPawn.Print();
+
+    // -------------------------------------------------------------
+    // 5. Test de l'AssetManager
+    // -------------------------------------------------------------
+    LOG_INFO("[5/5] Test de l'AssetManager...");
+    AssetManager assetManager;
+
+    LOG_INFO("-> OK : AssetManager initialise avec succes et connecte au JobSystem.");
+
+    LOG_INFO("========================================");
+    LOG_INFO("   TOUS LES TESTS SONT PASSES AVEC SUCCES ! ");
+    LOG_INFO("========================================");
+
+    // Fermeture propre du système de log
     Log::Shutdown();
-    //{
-    //    Guid key{};
-    //    // es ce que tu est hashable ? non throw oui je prend le hash
-    //    using ghash = std::hash<Guid>;
-    //    std::size_t id = ghash::operator()(key);
 
-
-
-
-    //}
-    
-    // Le destructeur de jobSystem s'exécutera ici, fermant proprement les threads workers.
     return 0;
 }

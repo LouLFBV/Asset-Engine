@@ -1,8 +1,10 @@
 #include "Checksum.h"
 
+#include <limits>
+
 uint32_t Checksum::CalculateCRC32(const unsigned char* data, size_t length)
 {
-    uint32_t crc = 0xFFFFFFFF;
+    uint32_t crc = std::numeric_limits<uint32_t>::max();
     for (size_t i = 0; i < length; ++i) {
         crc = crc ^ data[i];
         for (int j = 0; j < 8; ++j) {

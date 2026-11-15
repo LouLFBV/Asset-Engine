@@ -31,18 +31,18 @@ void Log::Print(LogLevel level, const std::string& message) {
     std::string colorCode;
 
     switch (level) {
-    case LogLevel::Info:
-        levelStr = "INFO";
-        colorCode = "\033[32m"; // Vert
-        break;
-    case LogLevel::Warning:
-        levelStr = "WARNING";
-        colorCode = "\033[33m"; // Jaune
-        break;
-    case LogLevel::Error:
-        levelStr = "ERROR";
-        colorCode = "\033[31m"; // Rouge
-        break;
+        case LogLevel::Info:
+            levelStr = "INFO";
+            colorCode = "\033[32m"; // Vert
+            break;
+        case LogLevel::Warning:
+            levelStr = "WARNING";
+            colorCode = "\033[33m"; // Jaune
+            break;
+        case LogLevel::Error:
+            levelStr = "ERROR";
+            colorCode = "\033[31m"; // Rouge
+            break;
     }
 
     std::string resetColor = "\033[0m";
@@ -53,7 +53,7 @@ void Log::Print(LogLevel level, const std::string& message) {
     std::string formattedMessage = std::string("[") + timeBuffer + "] [" + levelStr + "] " + message;
 
     {
-        // std::lock_guard<std::mutex> lock(s_Mutex);
+        std::lock_guard<std::mutex> lock(s_Mutex);
 
         std::cout << colorCode << formattedMessage << resetColor << std::endl;
 
