@@ -63,8 +63,8 @@ Chaque step se termine par **un test qui passe, puis un commit sur sa branche**.
   - [x] Test : `"123456789"` donne `0xCBF43926`
 - [x] **Step 17 :** SHA-256, avec la bibliothèque PicoSHA2 (consigne du prof)
   - [x] Test : vecteurs officiels
-- [ ] **Step 18 :** le hash à clé (HMAC)
-  - [ ] Test : vecteurs officiels, mauvaise clé refusée
+- [x] **Step 18 :** le hash à clé (HMAC)
+  - [x] Test : vecteurs officiels, mauvaise clé refusée
 - [ ] **Step 19 :** politique de sécurité selon le contexte, vérification à la lecture
   - [ ] Test : octet modifié refusé, CRC32 recalculé refusé en contexte HMAC
 - [ ] **🤝 Comparaison 2 :** réflexion et sécurité
