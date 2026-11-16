@@ -127,7 +127,7 @@ TEST_CASE("A failed load tells why")
 	SECTION("File deleted after the scan")
 	{
 		AssetManager manager(fixture.registry, SecurityPolicy::Checksum());
-		std::filesystem::remove(fixture.folder.Path() / "materials/red.asset");
+		RemoveFile(fixture.folder.Path() / "materials/red.asset");
 		REQUIRE(manager.Load("materials/red.asset").GetError() == AssetError::FileNotFound);
 	}
 

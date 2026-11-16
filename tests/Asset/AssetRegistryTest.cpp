@@ -141,13 +141,7 @@ TEST_CASE("A damaged registry.bin is refused, then rebuilt by Scan")
 	REQUIRE(registry.SaveCache(cache));
 
 	// One bit of the cache changes.
-	{
-		std::fstream file(cache, std::ios::in | std::ios::out | std::ios::binary);
-		file.seekg(10);
-		const char original = static_cast<char>(file.get());
-		file.seekp(10);
-		file.put(static_cast<char>(original ^ 0x01));
-	}
+	FlipBit(cache, 10);
 
 	AssetRegistry restored(folder.Path());
 	REQUIRE_FALSE(restored.LoadCache(cache));
