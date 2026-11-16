@@ -65,8 +65,8 @@ Chaque step se termine par **un test qui passe, puis un commit sur sa branche**.
   - [x] Test : vecteurs officiels
 - [x] **Step 18 :** le hash à clé (HMAC)
   - [x] Test : vecteurs officiels, mauvaise clé refusée
-- [ ] **Step 19 :** politique de sécurité selon le contexte, vérification à la lecture
-  - [ ] Test : octet modifié refusé, CRC32 recalculé refusé en contexte HMAC
+- [x] **Step 19 :** politique de sécurité selon le contexte, vérification à la lecture
+  - [x] Test : octet modifié refusé, CRC32 recalculé refusé en contexte HMAC
 - [ ] **🤝 Comparaison 2 :** réflexion et sécurité
 
 ### Samedi 14 : assets
