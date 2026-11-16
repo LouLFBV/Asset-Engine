@@ -1,4 +1,5 @@
 #include <AssetEngine/Asset/Asset.h>
+#include <AssetEngine/Asset/AssetFile.h>
 #include <AssetEngine/Asset/AssetManager.h>
 #include <AssetEngine/Asset/JobSystem.h>
 #include <AssetEngine/Core/Reflection/Factory.h>
@@ -13,6 +14,9 @@
 #include <AssetEngine/Core/Reflection/Reflect.h>
 #include <AssetEngine/Core/Reflection/TypeInfo.h>
 #include <AssetEngine/Security/Crc32.h>
+#include <AssetEngine/Security/Hmac.h>
+#include <AssetEngine/Security/SecurityPolicy.h>
+#include <AssetEngine/Security/Sha256.h>
 #include <AssetEngine/Serialization/Serialization.h>
 #include <AssetEngine/Serialization/Binary/BinaryWriter.h>
 #include <AssetEngine/Serialization/Binary/BinaryReader.h>

@@ -71,8 +71,8 @@ Chaque step se termine par **un test qui passe, puis un commit sur sa branche**.
 
 ### Samedi 14 : assets
 
-- [ ] **Step 20 :** `Asset/Asset` et le format `.asset` (header, métadonnées, payload, digest)
-  - [ ] Test : lire les métadonnées sans le payload
+- [x] **Step 20 :** `Asset/Asset` et le format `.asset` (header, métadonnées, payload, digest)
+  - [x] Test : lire les métadonnées sans le payload
 - [ ] **Step 21 :** `Asset/AssetRegistry`
   - [ ] Test : `Scan()`, recherches, `registry.bin` reconstruit
 - [ ] **Step 22 :** `Asset/AssetManager` en synchrone, avec cache et handle
