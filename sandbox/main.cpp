@@ -1,6 +1,8 @@
 #include <AssetEngine/Asset/Asset.h>
 #include <AssetEngine/Asset/AssetFile.h>
+#include <AssetEngine/Asset/AssetId.h>
 #include <AssetEngine/Asset/AssetManager.h>
+#include <AssetEngine/Asset/AssetRegistry.h>
 #include <AssetEngine/Asset/JobSystem.h>
 #include <AssetEngine/Core/Reflection/Factory.h>
 #include <AssetEngine/Core/Hash.h>
