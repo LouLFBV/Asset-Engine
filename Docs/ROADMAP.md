@@ -75,8 +75,8 @@ Chaque step se termine par **un test qui passe, puis un commit sur sa branche**.
   - [x] Test : lire les métadonnées sans le payload
 - [x] **Step 21 :** `Asset/AssetRegistry`
   - [x] Test : `Scan()`, recherches, `registry.bin` reconstruit
-- [ ] **Step 22 :** `Asset/AssetManager` en synchrone, avec cache et handle
-  - [ ] Test : deux `Load` donnent la même instance, libération automatique
+- [x] **Step 22 :** `Asset/AssetManager` en synchrone, avec cache et handle
+  - [x] Test : deux `Load` donnent la même instance, libération automatique
 
 ### Dimanche 15 : asynchrone et interface
 
