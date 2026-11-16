@@ -61,8 +61,8 @@ Chaque step se termine par **un test qui passe, puis un commit sur sa branche**.
 
 - [x] **Step 16 :** `Security/Crc32`, le CRC32
   - [x] Test : `"123456789"` donne `0xCBF43926`
-- [ ] **Step 17 :** SHA-256, avec une bibliothèque (consigne du prof, choix à faire)
-  - [ ] Test : vecteurs officiels
+- [x] **Step 17 :** SHA-256, avec la bibliothèque PicoSHA2 (consigne du prof)
+  - [x] Test : vecteurs officiels
 - [ ] **Step 18 :** le hash à clé (HMAC)
   - [ ] Test : vecteurs officiels, mauvaise clé refusée
 - [ ] **Step 19 :** politique de sécurité selon le contexte, vérification à la lecture
