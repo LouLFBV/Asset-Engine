@@ -59,8 +59,8 @@ Chaque step se termine par **un test qui passe, puis un commit sur sa branche**.
 
 ### Vendredi 13 : sécurité
 
-- [ ] **Step 16 :** `Security/Checksum`, le CRC32
-  - [ ] Test : `"123456789"` donne `0xCBF43926`
+- [x] **Step 16 :** `Security/Crc32`, le CRC32
+  - [x] Test : `"123456789"` donne `0xCBF43926`
 - [ ] **Step 17 :** SHA-256, avec une bibliothèque (consigne du prof, choix à faire)
   - [ ] Test : vecteurs officiels
 - [ ] **Step 18 :** le hash à clé (HMAC)

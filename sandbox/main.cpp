@@ -12,7 +12,7 @@
 #include <AssetEngine/Core/Log.h>
 #include <AssetEngine/Core/Reflection/Reflect.h>
 #include <AssetEngine/Core/Reflection/TypeInfo.h>
-#include <AssetEngine/Security/Checksum.h>
+#include <AssetEngine/Security/Crc32.h>
 #include <AssetEngine/Serialization/Serialization.h>
 #include <AssetEngine/Serialization/Binary/BinaryWriter.h>
 #include <AssetEngine/Serialization/Binary/BinaryReader.h>
