@@ -16,13 +16,10 @@ private:
     static std::mutex s_Mutex; // Pour éviter les conflits si plusieurs threads loguent en même temps (JobSystem !)
 
 public:
-    // Initialise le fichier de log au démarrage du moteur
     static void Init(const std::string& filepath = "engine.log");
 
-    // Ferme proprement le fichier à la fin
     static void Shutdown();
 
-    // Méthode centrale d'écriture
     static void Print(LogLevel level, const std::string& message);
 };
 

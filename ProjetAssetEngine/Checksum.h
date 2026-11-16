@@ -11,6 +11,8 @@ private:
     static inline void losses_or_bits(uint32_t& crc) {
         crc = (crc >> 1) ^ 0xEDB88320;
     }
+    //(crc >> 1) : On effectue un décalage de bits vers la droite(ce qui revient à diviser la valeur par 2).
+    //^ 0xEDB88320 : On applique un opérateur XOR(ou exclusif) avec une constante magique, 0xEDB88320. Cette constante représente le polynôme générateur du CRC32 inversé.
 
 public:
     // 1. Calculer le checksum à partir d'une chaîne de caractères (pour du texte/JSON)
