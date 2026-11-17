@@ -111,10 +111,13 @@
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
+      <AdditionalIncludeDirectories>$(SolutionDir)lib</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>$(SolutionDir)lib</AdditionalLibraryDirectories>
+      <AdditionalDependencies>$(CoreLibraryDependencies);%(AdditionalDependencies);$(SolutionDir)lib/SDL3-static.lib;winmm.lib;setupapi.lib;imm32.lib;version.lib</AdditionalDependencies>
     </Link>
     <Manifest>
       <EnableSegmentHeap>true</EnableSegmentHeap>
@@ -144,12 +147,19 @@
     <ClCompile Include="BinaryArchive.cpp" />
     <ClCompile Include="Checksum.cpp" />
     <ClCompile Include="Guid.cpp" />
+    <ClCompile Include="imgui.cpp" />
+    <ClCompile Include="ImGUIManager.cpp" />
+    <ClCompile Include="imgui_draw.cpp" />
+    <ClCompile Include="imgui_impl_sdl3.cpp" />
+    <ClCompile Include="imgui_impl_sdlrenderer3.cpp" />
+    <ClCompile Include="imgui_tables.cpp" />
+    <ClCompile Include="imgui_widgets.cpp" />
     <ClCompile Include="JobSystem.cpp" />
     <ClCompile Include="JsonArchive.cpp" />
     <ClCompile Include="Log.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="MGUI.cpp" />
     <ClCompile Include="Pawn.cpp" />
+    <ClCompile Include="Window.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Archive.h" />
@@ -159,13 +169,22 @@
     <ClInclude Include="Checksum.h" />
     <ClInclude Include="Factory.h" />
     <ClInclude Include="Guid.h" />
+    <ClInclude Include="imconfig.h" />
+    <ClInclude Include="imgui.h" />
+    <ClInclude Include="ImGUIManager.h" />
+    <ClInclude Include="imgui_impl_sdl3.h" />
+    <ClInclude Include="imgui_impl_sdlrenderer3.h" />
+    <ClInclude Include="imgui_internal.h" />
+    <ClInclude Include="imstb_rectpack.h" />
+    <ClInclude Include="imstb_textedit.h" />
+    <ClInclude Include="imstb_truetype.h" />
     <ClInclude Include="Log.h" />
     <ClInclude Include="JobSystem.h" />
     <ClInclude Include="json.h" />
     <ClInclude Include="JsonArchive.h" />
-    <ClInclude Include="MGUI.h" />
     <ClInclude Include="Pawn.h" />
     <ClInclude Include="RTTI.h" />
+    <ClInclude Include="Window.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="cpp.hint" />

@@ -41,3 +41,5 @@ public: \
         }; \
         static ClassName##_Register global_##ClassName##_Register; \
     }
+
+#define SAFE_CAST(T, obj) dynamic_cast<T*>(obj)
