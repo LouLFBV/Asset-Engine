@@ -24,16 +24,19 @@ uint32_t Checksum::ComputeFromString(const std::string& content)
 
 uint32_t Checksum::ComputeFromFile(const std::string& filepath) // charger un fichier entier en mémoire et calculer son empreinte d'un seul coup
 {
-    std::ifstream file(filepath, std::ios::binary | std::ios::ate);
+    std::ifstream file(filepath, std::ios::binary | std::ios::ate); // std::ios::binary : On ouvre le fichier en mode binaire pour éviter que le système d'exploitation ne s'amuse à modifier des caractères (comme les retours à la ligne \r\n sur Windows), ce qui fausserait complètement le calcul du CRC32.
+    //std::ios::ate(pour At The End) : C'est une astuce de pro. Au lieu d'ouvrir le fichier au début, ce flag positionne directement le curseur de lecture à la fin du fichier dès son ouverture.
+
     if (!file.is_open()) {
         return 0; // Erreur d'ouverture
     }
 
-    std::streamsize size = file.tellg();
-    file.seekg(0, std::ios::beg);
+    std::streamsize size = file.tellg(); // file.tellg() : Comme le curseur est positionné à la fin grâce à ate, demander sa position (tellg) nous donne instantanément la taille exacte du fichier en octets
+    file.seekg(0, std::ios::beg); // file.seekg(0, std::ios::beg) : Maintenant qu'on connaît la taille, on ramène le curseur tout au début du fichier (std::ios::beg) pour pouvoir commencer la lecture.
 
-    std::vector<unsigned char> buffer(static_cast<size_t>(size));
-    if (file.read(reinterpret_cast<char*>(buffer.data()), size)) {
+    std::vector<unsigned char> buffer(static_cast<size_t>(size)); // file.seekg(0, std::ios::beg) : Maintenant qu'on connaît la taille, on ramène le curseur tout au début du fichier (std::ios::beg) pour pouvoir commencer la lecture.
+    if (file.read(reinterpret_cast<char*>(buffer.data()), size)) { // file.read(...) : On lit tout le contenu du fichier d'un seul bloc et on le stocke dans notre buffer. 
+                                                                   //Le reinterpret_cast<char*> est juste là pour satisfaire le type attendu par la fonction de lecture de la bibliothèque standard (std::ifstream).
         return CalculateCRC32(buffer.data(), buffer.size());
     }
 

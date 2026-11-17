@@ -6,7 +6,10 @@ JobSystem::JobSystem(int threads)
 	if (threads == 0) threads = std::thread::hardware_concurrency();
 
 	for (size_t i = 0; i < threads; ++i)
-		jb_workers.emplace_back([this] {WorkerLoop(); });
+		jb_workers.emplace_back([this]
+			{
+				WorkerLoop();
+			});
 }
 
 JobSystem::~JobSystem()

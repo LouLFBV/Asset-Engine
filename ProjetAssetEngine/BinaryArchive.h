@@ -22,9 +22,16 @@ public:
     void Process(const char* Key, char& Data) override;
     void Process(const char* Key, std::string& Data) override;
 
-    void Process(const char* Key, uint16_t& Data) override;
-    void Process(const char* Key, uint32_t& Data) override;
-    void Process(const char* Key, int16_t& Data) override;
+    template <typename T>
+        requires std::is_arithmetic_v<T>
+    void Process(const char* key, T& data) { 
+        if (IsReading()) {
+            m_stream.read(reinterpret_cast<char*>(&data), sizeof(T));
+        }
+        else {
+            m_stream.write(reinterpret_cast<const char*>(&data), sizeof(T));
+        }
+    }
 
     bool IsValid() const { return m_stream.is_open() && m_stream.good(); }
 };
