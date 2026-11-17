@@ -1,11 +1,13 @@
-#pragma once
-#include <SDL3/SDL.h>
 
+#pragma once
+
+#include <SDL3/SDL.h>
 #include <string>
 
 class Window
 {
 public:
+
     Window(
         int renderWidth,
         int renderHeight,
@@ -21,21 +23,33 @@ public:
 
     bool Init();
 
-    void Render();
-
     bool PollEvents();
 
+    void Render();
+
+    void Clear();
+
+    void Present();
+
     SDL_Window* GetWindow() const { return m_window; }
+
     SDL_Renderer* GetRenderer() const { return m_renderer; }
 
+    int GetRenderWidth() const { return m_renderWidth; }
+
+    int GetRenderHeight() const { return m_renderHeight; }
+
+    bool IsInitialized() const { return m_window != nullptr && m_renderer != nullptr; }
+
 private:
+
     int m_renderWidth;
     int m_renderHeight;
+
     int m_windowWidth;
     int m_windowHeight;
 
     std::string m_title;
-
 
     SDL_Window* m_window = nullptr;
     SDL_Renderer* m_renderer = nullptr;

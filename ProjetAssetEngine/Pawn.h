@@ -31,6 +31,9 @@ public:
     // 4. Type polymorphe (Pointeur vers une classe dérivée de RTTI)
     RTTI* equippedWeapon = nullptr;
 
+    // NOUVEAU : Le Pawn garde en mémoire son chemin de fichier d'origine (Asset Registry)
+    std::string sourceFilePath = "";
+
     Pawn() = default;
     ~Pawn() {
         if (equippedWeapon) delete equippedWeapon;
@@ -43,10 +46,17 @@ public:
         ar.Process("Grid", grid);
         ar.Process("Stats", stats);
         ar.Process("EquippedWeapon", equippedWeapon); // Gère le polymorphisme !
+
+        // Note : On ne serialize pas forcément sourceFilePath dans le fichier de sauvegarde 
+        // car c'est une métadonnée d'exécution liée à l'Asset Registry.
     }
 
     void Print() const {
         std::cout << "  -> Pawn [Health: " << health << ", Speed: " << speed << "]\n";
+
+        if (!sourceFilePath.empty()) {
+            std::cout << "     Fichier source : " << sourceFilePath << "\n";
+        }
 
         std::cout << "     Inventaire (" << inventory.size() << " items): ";
         for (int id : inventory) std::cout << id << " ";

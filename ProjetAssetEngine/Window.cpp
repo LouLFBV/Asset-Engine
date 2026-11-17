@@ -47,12 +47,6 @@ bool Window::Init()
 }
 
 
-void Window::Render()
-{
-    SDL_RenderClear(m_renderer);
-    SDL_RenderPresent(m_renderer);
-}
-
 bool Window::PollEvents()
 {
     SDL_Event event;
@@ -63,4 +57,35 @@ bool Window::PollEvents()
         }
     }
     return true;
+}
+
+
+void Window::Clear()
+{
+    if (m_renderer == nullptr)
+        return;
+
+    SDL_SetRenderDrawColor(
+        m_renderer,
+        30,
+        30,
+        35,
+        255
+    );
+
+    SDL_RenderClear(m_renderer);
+}
+
+void Window::Present()
+{
+    if (m_renderer == nullptr)
+        return;
+
+    SDL_RenderPresent(m_renderer);
+}
+
+void Window::Render()
+{
+    Clear();
+    Present();
 }

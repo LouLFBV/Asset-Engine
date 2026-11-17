@@ -1,19 +1,39 @@
+
 #pragma once
+
 #include <string>
+#include <cstdint>
+#include <mutex>
 
 #include "Guid.h"
 
-// Déclaration anticipée de la classe de base dont toutes tes classes vont hériter
 class RTTI;
 
-struct Asset {
-	uint32_t checksum = 0; // Pour vérifier l'intégrité du fichier
-    Guid uiid;
-    std::string path;
+struct Asset
+{
+    uint32_t checksum = 0;
 
-    // "type RTTI (classe)" : la string qui permet de retrouver la classe dans le registre
+    Guid uiid;
+
+    std::string path;
     std::string type;
 
-    // "objet s'il est load (un ptr)" : pointeur vers la classe de base
+    // Objet charge en memoire.
     RTTI* objet = nullptr;
+
+    // Synchronisation entre le thread principal et les workers.
+    mutable std::mutex mutex;
+
+    // Consultation securisee de l'objet.
+    RTTI* GetObject() const
+    {
+        std::lock_guard<std::mutex> lock(mutex);
+        return objet;
+    }
+
+    bool IsLoaded() const
+    {
+        std::lock_guard<std::mutex> lock(mutex);
+        return objet != nullptr;
+    }
 };

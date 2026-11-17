@@ -1,35 +1,51 @@
+
 #pragma once
+
 #include <set>
-#include <xhash>
-#include <chrono>
+#include <unordered_map>
+#include <mutex>
+#include <string>
+
 #include "Asset.h"
+#include "Guid.h"
 #include "Factory.h"
 #include "JsonArchive.h"
 #include "RTTI.h"
 #include "JobSystem.h"
 
-struct Guid;
-
-class AssetManager {
+class AssetManager
+{
 private:
+
     JobSystem m_assetJobSystem;
+
     std::unordered_map<Guid, Asset*> m_assetRegistry;
 
-    // Le conteneur secret pour ne pas faire lagger le jeu !
-    // Il associe l'UUID de l'asset à sa tâche de chargement en arrière-plan.
+    // Assets actuellement en cours de chargement.
     std::set<Guid> m_loadingTasks;
 
+    // Protection du set.
+    std::mutex m_loadingMutex;
+
+    // Destruction des assets.
+    void ClearRegistry();
+
 public:
+
     AssetManager();
-    ~AssetManager() = default;
+
+    ~AssetManager();
+
     void LoadSync(Asset* asset);
 
-    //ASYNCHRONE (Ne bloque pas le jeu)
     void LoadAsync(Asset* asset);
 
     void ScanDirectory(const std::string& directoryPath);
 
     JobSystem& GetJobSystem();
 
-    std::unordered_map<Guid, Asset*>& GetRegistry() { return m_assetRegistry; };
+    std::unordered_map<Guid, Asset*>& GetRegistry()
+    {
+        return m_assetRegistry;
+    }
 };
