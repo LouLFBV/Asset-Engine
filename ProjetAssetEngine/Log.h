@@ -23,8 +23,6 @@ public:
     static void Print(LogLevel level, const std::string& message);
 };
 
-// --- MACROS DE CONFORT ---
-// Ça évite d'écrire Log::Print à chaque fois et ça rend le code plus propre
 #define LOG_INFO(msg)    Log::Print(LogLevel::Info, msg)
 #define LOG_WARN(msg)    Log::Print(LogLevel::Warning, msg)
 #define LOG_ERROR(msg)   Log::Print(LogLevel::Error, msg)

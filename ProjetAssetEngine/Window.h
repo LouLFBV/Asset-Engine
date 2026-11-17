@@ -23,7 +23,7 @@ public:
 
     void Render();
 
-    bool PollEvents(float deltaTime);
+    bool PollEvents();
 
     SDL_Window* GetWindow() const { return m_window; }
     SDL_Renderer* GetRenderer() const { return m_renderer; }

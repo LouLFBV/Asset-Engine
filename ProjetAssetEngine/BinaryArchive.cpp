@@ -1,21 +1,20 @@
 #include "BinaryArchive.h"
+#include "Checksum.h" 
+#include "Log.h"      
+#include <vector>
+#include <stdexcept>
+#include <iostream>
 
 BinaryArchive::BinaryArchive(const std::string& filepath, ArchiveDirection dir)
-    : Archive(dir)
+    : Archive(dir, filepath) // Assure-toi de stocker ton filepath dans un attribut m_filepath si ce n'est pas déjà fait
 {
-    // Définition des modes d'ouverture de fichier
-    std::ios_base::openmode mode = std::ios::binary; //std::ios_base::openmode : C'est le type de variable standard en C++ qui sert à stocker des drapeaux (flags) de configuration pour les fichiers.
-                                                     //std::ios::binary : On commence par dire qu'on veut travailler en mode binaire.
+    std::ios_base::openmode mode = std::ios::binary;
 
     if (IsReading()) {
-        mode |= std::ios::in; // L'opérateur |= (le ou binaire cumulé) sert à ajouter un drapeau sans effacer les précédents. Ici, on ajoute std::ios::in (pour Input), qui donne l'autorisation de lire dans le fichier.
+        mode |= std::ios::in;
     }
     else {
-        mode |= std::ios::out | std::ios::trunc; // trunc efface le fichier existant
-        //On ajoute deux drapeaux d'un coup grâce aux | :
-        //    std::ios::out(Output) : Pour donner l'autorisation d'écrire dans le fichier.
-        //    std::ios::trunc(Truncate / Tronquer) : C'est une sécurité indispensable. Si le fichier existe déjà sur le disque, ce flag efface tout son contenu à l'ouverture pour repartir sur une feuille blanche.
-        //    Ça évite que de vieilles données qui traînent ne se mélangent avec ta nouvelle sauvegarde.
+        mode |= std::ios::out | std::ios::trunc;
     }
 
     m_stream.open(filepath, mode);

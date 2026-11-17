@@ -13,7 +13,7 @@ struct Guid;
 class AssetManager {
 private:
     JobSystem m_assetJobSystem;
-    std::unordered_map<Guid, Asset*> m_assetTree;
+    std::unordered_map<Guid, Asset*> m_assetRegistry;
 
     // Le conteneur secret pour ne pas faire lagger le jeu !
     // Il associe l'UUID de l'asset à sa tâche de chargement en arrière-plan.
@@ -27,5 +27,9 @@ public:
     //ASYNCHRONE (Ne bloque pas le jeu)
     void LoadAsync(Asset* asset);
 
+    void ScanDirectory(const std::string& directoryPath);
+
     JobSystem& GetJobSystem();
+
+    std::unordered_map<Guid, Asset*>& GetRegistry() { return m_assetRegistry; };
 };

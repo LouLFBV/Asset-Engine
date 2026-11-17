@@ -53,7 +53,7 @@ void Window::Render()
     SDL_RenderPresent(m_renderer);
 }
 
-bool Window::PollEvents(float deltaTime)
+bool Window::PollEvents()
 {
     SDL_Event event;
     while (SDL_PollEvent(&event)) {

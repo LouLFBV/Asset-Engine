@@ -12,8 +12,12 @@ bool ImGUIManager::Init(SDL_Window* window, SDL_Renderer* renderer)
 	ImGuiIO& io = ImGui::GetIO(); 
 	(void)io;
 	io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
+	io.FontGlobalScale = 1.5f;
 
 	ImGui::StyleColorsDark();
+
+	ImGuiStyle& style = ImGui::GetStyle();
+	style.ScaleAllSizes(1.5f);
 
 	if (!ImGui_ImplSDL3_InitForSDLRenderer(window,renderer)) {
 		std::cerr << "Erreur: ImGui_ImplSDL3_InitForSDLRenderer a echoue !" << std::endl; 

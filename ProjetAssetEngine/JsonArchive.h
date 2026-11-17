@@ -9,7 +9,6 @@ using json = nlohmann::json;
 
 class JsonArchive : public Archive {
 private:
-    std::string m_filepath;
     json m_jsonData;        // L'objet JSON gardé en mémoire tampon (buffer)
 
 public:

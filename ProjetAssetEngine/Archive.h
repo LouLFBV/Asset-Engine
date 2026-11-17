@@ -9,25 +9,26 @@ enum class ArchiveDirection { Read, Write };
 
 class Archive {
 protected:
-	ArchiveDirection m_direction;
+    ArchiveDirection m_direction;
+    std::string m_filepath;
 
 public:
-	Archive(ArchiveDirection dir) : m_direction(dir) {}
-	virtual ~Archive() = default;
+    Archive(ArchiveDirection dir, std::string filepath) : m_direction(dir), m_filepath(filepath) {};
+    virtual ~Archive() = default;
 
-	inline bool IsReading() const { return m_direction == ArchiveDirection::Read; }
-	inline bool IsWriting() const { return m_direction == ArchiveDirection::Write; }
+    inline bool IsReading() const { return m_direction == ArchiveDirection::Read; }
+    inline bool IsWriting() const { return m_direction == ArchiveDirection::Write; }
 
-	virtual void Process(const char* Key, int& Data) = 0;
-	virtual void Process(const char* Key, float& Data) = 0;
-	virtual void Process(const char* Key, std::string& Data) = 0;
-	virtual void Process(const char* Key, double& Data) = 0;
-	virtual void Process(const char* Key, bool& Data) = 0;
-	virtual void Process(const char* Key, char& Data) = 0;
+    virtual void Process(const char* Key, int& Data) = 0;
+    virtual void Process(const char* Key, float& Data) = 0;
+    virtual void Process(const char* Key, std::string& Data) = 0;
+    virtual void Process(const char* Key, double& Data) = 0;
+    virtual void Process(const char* Key, bool& Data) = 0;
+    virtual void Process(const char* Key, char& Data) = 0;
 
-	virtual void Process(const char* Key, uint16_t& Data) = 0;
-	virtual void Process(const char* Key, uint32_t& Data) = 0;
-	virtual void Process(const char* Key, int16_t& Data) = 0;
+    virtual void Process(const char* Key, uint16_t& Data) = 0;
+    virtual void Process(const char* Key, uint32_t& Data) = 0;
+    virtual void Process(const char* Key, int16_t& Data) = 0;
 
 
     // DECLARATION pour les types polymorphes (RTTI)
