@@ -82,8 +82,8 @@ Chaque step se termine par **un test qui passe, puis un commit sur sa branche**.
 
 - [x] **Step 23 :** `Asset/JobSystem`
   - [x] Test : 1 000 tâches exécutées une seule fois, arrêt propre
-- [ ] **Step 24 :** `LoadAsync` et `Update`
-  - [ ] Test : pas de double chargement, callbacks sur le thread principal
+- [x] **Step 24 :** `LoadAsync` et `Update`
+  - [x] Test : pas de double chargement, callbacks sur le thread principal
 - [ ] **Step 25 :** interface ImGui simple, dans `editor/`
   - [ ] Vérification à l'œil
 - [ ] **🤝 Comparaison 3 :** assets et chargement
