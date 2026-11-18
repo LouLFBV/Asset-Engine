@@ -5,6 +5,7 @@
 #include <unordered_map>
 #include <mutex>
 #include <string>
+#include <vector>
 
 #include "Asset.h"
 #include "Guid.h"
@@ -12,6 +13,7 @@
 #include "JsonArchive.h"
 #include "RTTI.h"
 #include "JobSystem.h"
+#include "Pawn.h"
 
 class AssetManager
 {
@@ -40,7 +42,7 @@ public:
 
     void LoadAsync(Asset* asset);
 
-    void ScanDirectory(const std::string& directoryPath);
+    void ScanDirectory(const std::string& directoryPath, std::vector<Pawn*>& worldPawns);
 
     JobSystem& GetJobSystem();
 

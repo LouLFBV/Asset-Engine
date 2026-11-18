@@ -10,7 +10,6 @@
 
 int main()
 {
-    // 1. Initialisation du moteur.
     Log::Init("engine.log");
 
     Window window(
@@ -28,7 +27,6 @@ int main()
         return -1;
     }
 
-    // 2. Initialisation de ImGui.
     ImGUIManager imguiManager;
 
     if (!imguiManager.Init(
@@ -41,13 +39,11 @@ int main()
         return -1;
     }
 
-    // 3. Initialisation de l'AssetManager.
     AssetManager assetManager;
-
-    assetManager.ScanDirectory("Assets");
-
-    // 4. Initialisation du monde.
     std::vector<Pawn*> worldPawns;
+
+    assetManager.ScanDirectory("Assets", worldPawns);
+
 
     std::vector<std::unique_ptr<Pawn>> ownedPawns;
 
@@ -68,7 +64,6 @@ int main()
 
     ownedPawns.push_back(std::move(playerPawn));
 
-    // 5. Game Loop.
     bool isRunning = true;
 
     while (isRunning)
@@ -92,11 +87,8 @@ int main()
         window.Present();
     }
 
-    // 6. Fermeture.
     assetManager.GetJobSystem().WaitIdle();
 
-    // Attention : retirer les references aux assets
-    // avant leur destruction.
     worldPawns.clear();
 
     ownedPawns.clear();
