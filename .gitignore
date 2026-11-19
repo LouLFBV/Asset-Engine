@@ -88,3 +88,6 @@ x86/
 
 # Editor settings, personal to each developer
 .vscode/
+
+# Demo assets the editor creates where it runs
+EditorAssets/

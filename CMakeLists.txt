@@ -10,3 +10,6 @@ add_subdirectory(sandbox)
 
 enable_testing()
 add_subdirectory(tests)
+
+# The ImGui editor, built on GLFW and OpenGL 3: Windows, Linux and macOS.
+add_subdirectory(editor)

@@ -84,8 +84,8 @@ Chaque step se termine par **un test qui passe, puis un commit sur sa branche**.
   - [x] Test : 1 000 tâches exécutées une seule fois, arrêt propre
 - [x] **Step 24 :** `LoadAsync` et `Update`
   - [x] Test : pas de double chargement, callbacks sur le thread principal
-- [ ] **Step 25 :** interface ImGui simple, dans `editor/`
-  - [ ] Vérification à l'œil
+- [x] **Step 25 :** interface ImGui simple, dans `editor/`
+  - [x] Vérification à l'œil
 - [ ] **🤝 Comparaison 3 :** assets et chargement
 
 ## Semaine 2 : finitions et bonus
