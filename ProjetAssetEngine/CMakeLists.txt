@@ -7,7 +7,6 @@ set(PROJECT_LEGACY_SOURCES
     ImGUIManager.cpp
     JobSystem.cpp
     AssetManager.cpp
-    Factory.cpp
     Guid.cpp
     Checksum.cpp
     Log.cpp
