@@ -1,0 +1,28 @@
+#pragma once
+#include <string>
+#include <iostream>
+#include <fstream>
+#include <mutex>
+
+enum class LogLevel {
+    Info,
+    Warning,
+    Error
+};
+
+class Log {
+private:
+    static std::ofstream s_LogFile;
+    static std::mutex s_Mutex; // Pour éviter les conflits si plusieurs threads loguent en même temps (JobSystem !)
+
+public:
+    static void Init(const std::string& filepath = "engine.log");
+
+    static void Shutdown();
+
+    static void Print(LogLevel level, const std::string& message);
+};
+
+#define LOG_INFO(msg)    Log::Print(LogLevel::Info, msg)
+#define LOG_WARN(msg)    Log::Print(LogLevel::Warning, msg)
+#define LOG_ERROR(msg)   Log::Print(LogLevel::Error, msg)

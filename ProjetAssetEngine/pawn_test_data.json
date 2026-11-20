@@ -1,0 +1,25 @@
+{
+    "Damage": 60,
+    "EquippedWeapon_class": "Weapon",
+    "Grid_0_0": 1,
+    "Grid_0_1": 0,
+    "Grid_0_2": 1,
+    "Grid_0_size": 3,
+    "Grid_1_0": 0,
+    "Grid_1_1": 2,
+    "Grid_1_2": 0,
+    "Grid_1_size": 3,
+    "Grid_size": 2,
+    "Health": 90,
+    "Inventory_0": 101,
+    "Inventory_1": 202,
+    "Inventory_2": 303,
+    "Inventory_size": 3,
+    "Speed": 12.5,
+    "Stats_k0": "Agility",
+    "Stats_k1": "Strength",
+    "Stats_size": 2,
+    "Stats_v0": 22,
+    "Stats_v1": 40
+}
+// Fichier corrompu par un tiers

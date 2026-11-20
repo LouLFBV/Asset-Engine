@@ -1,0 +1,177 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Fichiers sources">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Fichiers d%27en-tête">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Fichiers de ressources">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Fichiers d%27en-tête\Asset">
+      <UniqueIdentifier>{3244e26c-7ab9-430d-adb0-c69e48307b8d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers sources\Asset">
+      <UniqueIdentifier>{5651bd9a-ebe2-475e-ab49-fa028b29fcb3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers d%27en-tête\Core">
+      <UniqueIdentifier>{e57e3a22-1a5d-4464-b2e4-534818716bf8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers sources\Core">
+      <UniqueIdentifier>{dee5f094-7dbd-41ef-8907-ec6a80262ddb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers sources\Security">
+      <UniqueIdentifier>{f6c690f2-423b-435d-9f00-f4fc1bd1bcc5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers d%27en-tête\Security">
+      <UniqueIdentifier>{84a6b87b-1239-4ea5-bcac-6e3ea636b933}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers d%27en-tête\Serialization">
+      <UniqueIdentifier>{5c1d5883-673f-4f8d-90e3-408c399770a6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers sources\Serialization">
+      <UniqueIdentifier>{8ebce6e2-dc22-4d1c-9c1b-b96a74d16c00}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers d%27en-tête\UI">
+      <UniqueIdentifier>{3769001d-6781-4f73-9aae-80dcca3bfa95}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers sources\UI">
+      <UniqueIdentifier>{8cedfdc6-cdd3-496e-abfa-8803e17ea018}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="main.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
+    <ClCompile Include="AssetManager.cpp">
+      <Filter>Fichiers sources\Asset</Filter>
+    </ClCompile>
+    <ClCompile Include="BinaryArchive.cpp">
+      <Filter>Fichiers sources\Serialization</Filter>
+    </ClCompile>
+    <ClCompile Include="JsonArchive.cpp">
+      <Filter>Fichiers sources\Serialization</Filter>
+    </ClCompile>
+    <ClCompile Include="Checksum.cpp">
+      <Filter>Fichiers sources\Security</Filter>
+    </ClCompile>
+    <ClCompile Include="Log.cpp">
+      <Filter>Fichiers sources\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Guid.cpp">
+      <Filter>Fichiers sources\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Pawn.cpp">
+      <Filter>Fichiers sources\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Archive.cpp">
+      <Filter>Fichiers sources\Serialization</Filter>
+    </ClCompile>
+    <ClCompile Include="JobSystem.cpp">
+      <Filter>Fichiers sources\Asset</Filter>
+    </ClCompile>
+    <ClCompile Include="Window.cpp">
+      <Filter>Fichiers sources\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="ImGUIManager.cpp">
+      <Filter>Fichiers sources\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui_widgets.cpp">
+      <Filter>Fichiers sources\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui_tables.cpp">
+      <Filter>Fichiers sources\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui_impl_sdlrenderer3.cpp">
+      <Filter>Fichiers sources\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui_impl_sdl3.cpp">
+      <Filter>Fichiers sources\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui_draw.cpp">
+      <Filter>Fichiers sources\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui.cpp">
+      <Filter>Fichiers sources\UI</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="AssetManager.h">
+      <Filter>Fichiers d%27en-tête\Asset</Filter>
+    </ClInclude>
+    <ClInclude Include="Asset.h">
+      <Filter>Fichiers d%27en-tête\Asset</Filter>
+    </ClInclude>
+    <ClInclude Include="JobSystem.h">
+      <Filter>Fichiers d%27en-tête\Asset</Filter>
+    </ClInclude>
+    <ClInclude Include="Log.h">
+      <Filter>Fichiers d%27en-tête\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="RTTI.h">
+      <Filter>Fichiers d%27en-tête\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Factory.h">
+      <Filter>Fichiers d%27en-tête\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Guid.h">
+      <Filter>Fichiers d%27en-tête\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Checksum.h">
+      <Filter>Fichiers d%27en-tête\Security</Filter>
+    </ClInclude>
+    <ClInclude Include="Archive.h">
+      <Filter>Fichiers d%27en-tête\Serialization</Filter>
+    </ClInclude>
+    <ClInclude Include="BinaryArchive.h">
+      <Filter>Fichiers d%27en-tête\Serialization</Filter>
+    </ClInclude>
+    <ClInclude Include="JsonArchive.h">
+      <Filter>Fichiers d%27en-tête\Serialization</Filter>
+    </ClInclude>
+    <ClInclude Include="json.h">
+      <Filter>Fichiers d%27en-tête\Serialization</Filter>
+    </ClInclude>
+    <ClInclude Include="Pawn.h">
+      <Filter>Fichiers d%27en-tête\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Window.h">
+      <Filter>Fichiers d%27en-tête\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="ImGUIManager.h">
+      <Filter>Fichiers d%27en-tête\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="imconfig.h">
+      <Filter>Fichiers d%27en-tête\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui.h">
+      <Filter>Fichiers d%27en-tête\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui_impl_sdl3.h">
+      <Filter>Fichiers d%27en-tête\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui_impl_sdlrenderer3.h">
+      <Filter>Fichiers d%27en-tête\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui_internal.h">
+      <Filter>Fichiers d%27en-tête\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="imstb_textedit.h">
+      <Filter>Fichiers d%27en-tête\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="imstb_rectpack.h">
+      <Filter>Fichiers d%27en-tête\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="imstb_truetype.h">
+      <Filter>Fichiers d%27en-tête\UI</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="cpp.hint" />
+  </ItemGroup>
+</Project>

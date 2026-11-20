@@ -1,0 +1,25 @@
+{
+    "Damage": 45,
+    "EquippedWeapon_class": "Weapon",
+    "Grid_0_0": 1,
+    "Grid_0_1": 0,
+    "Grid_0_2": 1,
+    "Grid_0_size": 3,
+    "Grid_1_0": 0,
+    "Grid_1_1": 2,
+    "Grid_1_2": 0,
+    "Grid_1_size": 3,
+    "Grid_size": 2,
+    "Health": 100,
+    "Inventory_0": 7,
+    "Inventory_1": 77,
+    "Inventory_2": 777,
+    "Inventory_size": 3,
+    "Speed": 15.0,
+    "Stats_k0": "Agility",
+    "Stats_k1": "Strength",
+    "Stats_size": 2,
+    "Stats_v0": 50,
+    "Stats_v1": 15
+}
+// Corruption volontaire
