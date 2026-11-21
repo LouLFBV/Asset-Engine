@@ -1,4 +1,3 @@
-
 #include "ImGUIManager.h"
 #include "imgui.h"
 #include "imgui_impl_sdl3.h"
@@ -20,8 +19,6 @@
 #include <string>
 #include <exception>
 
-
-
 static std::string NormalizePath(const std::string& path)
 {
     std::error_code error;
@@ -40,6 +37,39 @@ static std::string NormalizePath(const std::string& path)
     return normalized.lexically_normal().generic_string();
 }
 
+std::string ImGUIManager::ResolveAssetsDir(bool createIfMissing)
+{
+    const std::vector<std::filesystem::path> candidates = {
+        std::filesystem::path("Assets"),
+        std::filesystem::path("ProjetAssetEngine/Assets"),
+        std::filesystem::path("../../ProjetAssetEngine/Assets"),
+        std::filesystem::path("../../../ProjetAssetEngine/Assets"),
+        std::filesystem::path("../../Assets")
+    };
+
+    std::error_code ec;
+    for (const auto& candidate : candidates)
+    {
+        if (std::filesystem::exists(candidate, ec) &&
+            std::filesystem::is_directory(candidate, ec))
+        {
+            return NormalizePath(candidate.string());
+        }
+    }
+
+    // Fallback par défaut : crée "ProjetAssetEngine/Assets" ou "Assets"
+    const std::filesystem::path fallback =
+        std::filesystem::exists("ProjetAssetEngine", ec)
+        ? std::filesystem::path("ProjetAssetEngine/Assets")
+        : std::filesystem::path("Assets");
+
+    if (createIfMissing)
+    {
+        std::filesystem::create_directories(fallback, ec);
+    }
+
+    return NormalizePath(fallback.string());
+}
 
 // Vérifie si un Pawn est déjà présent dans le monde.
 static bool IsPawnAlreadyInWorld(
@@ -74,7 +104,6 @@ static bool IsPawnAlreadyInWorld(
 
     return false;
 }
-
 
 // Retire un Pawn du monde sans détruire les objets appartenant
 // à l'AssetManager.
@@ -144,7 +173,6 @@ static void RemovePawnFromWorld(
     LOG_INFO("Pawn retire du monde.");
 }
 
-
 bool ImGUIManager::Init(SDL_Window* window, SDL_Renderer* renderer)
 {
     IMGUI_CHECKVERSION();
@@ -188,7 +216,6 @@ bool ImGUIManager::Init(SDL_Window* window, SDL_Renderer* renderer)
     return true;
 }
 
-
 void ImGUIManager::Shutdown()
 {
     if (!m_initialized)
@@ -202,7 +229,6 @@ void ImGUIManager::Shutdown()
     m_initialized = false;
 }
 
-
 void ImGUIManager::BeginFrame()
 {
     if (!m_initialized)
@@ -214,8 +240,6 @@ void ImGUIManager::BeginFrame()
     ImGui::NewFrame();
 }
 
-
-
 void ImGUIManager::ApplyStyle()
 {
     ImGuiStyle& style = ImGui::GetStyle();
@@ -223,8 +247,6 @@ void ImGUIManager::ApplyStyle()
     style.WindowRounding = 5.0f;
     style.FrameRounding = 3.0f;
 }
-
-
 
 void ImGUIManager::DrawDashboard(
     AssetManager& assetManager,
@@ -302,7 +324,6 @@ void ImGUIManager::DrawPawnPanel(
         worldPawns.size()
     );
 
-
     // Liste des Pawns.
     int pawnIndexToRemove = -1;
 
@@ -358,8 +379,6 @@ void ImGUIManager::DrawPawnPanel(
         );
     }
 
-
-
     if (worldPawns.empty())
     {
         m_selectedPawnIndex = -1;
@@ -393,7 +412,6 @@ void ImGUIManager::DrawPawnPanel(
         );
     }
 
-
     ImGui::SliderInt(
         "Sante (Health)",
         &currentPawn->health,
@@ -407,7 +425,6 @@ void ImGUIManager::DrawPawnPanel(
         1.0f,
         50.0f
     );
-
 
     if (currentPawn->equippedWeapon)
     {
@@ -426,8 +443,6 @@ void ImGUIManager::DrawPawnPanel(
         }
     }
 
-
-
     if (ImGui::Button("Sauvegarder en JSON"))
     {
         std::filesystem::path path;
@@ -438,8 +453,9 @@ void ImGUIManager::DrawPawnPanel(
         }
         else
         {
-            path = "Assets/pawn_" +
-                std::to_string(m_selectedPawnIndex);
+            const std::string assetsDir = ResolveAssetsDir(true);
+            path = std::filesystem::path(assetsDir) /
+                ("pawn_" + std::to_string(m_selectedPawnIndex));
         }
 
         path.replace_extension(".json");
@@ -471,10 +487,7 @@ void ImGUIManager::DrawPawnPanel(
         }
     }
 
-
     ImGui::SameLine();
-
-
 
     if (ImGui::Button("Sauvegarder en Binaire"))
     {
@@ -486,8 +499,9 @@ void ImGUIManager::DrawPawnPanel(
         }
         else
         {
-            path = "Assets/pawn_" +
-                std::to_string(m_selectedPawnIndex);
+            const std::string assetsDir = ResolveAssetsDir(true);
+            path = std::filesystem::path(assetsDir) /
+                ("pawn_" + std::to_string(m_selectedPawnIndex));
         }
 
         path.replace_extension(".bin");
@@ -519,8 +533,6 @@ void ImGUIManager::DrawPawnPanel(
         }
     }
 
-
-
     ImGui::Separator();
 
     if (ImGui::Button("Retirer du monde", ImVec2(-1, 0)))
@@ -534,8 +546,6 @@ void ImGUIManager::DrawPawnPanel(
     }
 }
 
-
-
 void ImGUIManager::DrawAssetPanel(
     AssetManager& assetManager,
     std::vector<Pawn*>& worldPawns
@@ -548,10 +558,9 @@ void ImGUIManager::DrawAssetPanel(
         return;
     }
 
-
     if (ImGui::Button("Re-scanner le dossier Assets"))
     {
-        assetManager.ScanDirectory("Assets", worldPawns);
+        assetManager.ScanDirectory(ResolveAssetsDir(false), worldPawns);
 
         if (worldPawns.empty())
         {
@@ -573,8 +582,6 @@ void ImGUIManager::DrawAssetPanel(
 
     ImGui::Text("Fichiers indexes (sans chargement lourd) :");
 
-
-
     for (auto& pair : assetManager.GetRegistry())
     {
         Asset* asset = pair.second;
@@ -591,13 +598,9 @@ void ImGUIManager::DrawAssetPanel(
 
         ImGui::SameLine();
 
-
-
         RTTI* loadedObject = asset->GetObject();
 
         Pawn* assetPawn = SAFE_CAST(Pawn, loadedObject);
-
-
 
         bool alreadyInWorld = false;
 
@@ -623,15 +626,10 @@ void ImGUIManager::DrawAssetPanel(
             }
         }
 
-
-
         if (alreadyInWorld)
         {
             ImGui::TextDisabled("[Deja dans le monde]");
         }
-
-
-
         else if (assetPawn != nullptr)
         {
             ImGui::TextColored(
@@ -661,9 +659,6 @@ void ImGUIManager::DrawAssetPanel(
                 }
             }
         }
-
-
-
         else
         {
             if (ImGui::Button("Load Async"))
@@ -679,7 +674,6 @@ void ImGUIManager::DrawAssetPanel(
         ImGui::PopID();
     }
 }
-
 
 void ImGUIManager::Render(
     SDL_Renderer* renderer,

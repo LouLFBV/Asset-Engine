@@ -30,7 +30,8 @@ bool Guid::operator<(const Guid& other) const
 	else if (data3 > other.data3)
 		return false;
 
-	for (int i = 0; i < 8; ++i) {
+	for (int i = 0; i < 8; ++i) 
+	{
 		if (data4[i] < other.data4[i])
 			return true;
 		if (data4[i] > other.data4[i])

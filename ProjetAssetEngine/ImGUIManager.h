@@ -29,6 +29,7 @@ public:
         std::vector<Pawn*>& worldPawns,
         std::vector<std::unique_ptr<Pawn>>& ownedPawns
     );
+    static std::string ResolveAssetsDir(bool createIfMissing = false);
 
 private:
     void DrawDashboard(

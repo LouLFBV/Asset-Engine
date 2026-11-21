@@ -1,4 +1,3 @@
-
 #include <memory>
 #include <vector>
 
@@ -42,8 +41,8 @@ int main()
     AssetManager assetManager;
     std::vector<Pawn*> worldPawns;
 
-    assetManager.ScanDirectory("Assets", worldPawns);
-
+    const std::string assetsDir = ImGUIManager::ResolveAssetsDir(true);
+    assetManager.ScanDirectory(assetsDir, worldPawns);
 
     std::vector<std::unique_ptr<Pawn>> ownedPawns;
 

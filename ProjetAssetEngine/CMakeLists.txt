@@ -50,8 +50,36 @@ add_executable(ProjetAssetEngine
 
 target_compile_features(ProjetAssetEngine PRIVATE cxx_std_20)
 
-# Trouve <SDL3/SDL.h> dans ProjetAssetEngine/lib/SDL3
+set(SDL3_ROOT_DIR "${CMAKE_CURRENT_SOURCE_DIR}/lib")
+
 target_include_directories(ProjetAssetEngine PRIVATE
     "${CMAKE_CURRENT_SOURCE_DIR}"
-    "${CMAKE_CURRENT_SOURCE_DIR}/lib"
+    "${SDL3_ROOT_DIR}"
 )
+
+# Adapte le chemin si SDL3-static.lib est dans un sous-dossier de lib/SDL3 (ex: lib/SDL3/lib/x64/SDL3-static.lib)
+set(SDL3_STATIC_LIB "${SDL3_ROOT_DIR}/SDL3/SDL3-static.lib")
+
+if(EXISTS "${SDL3_STATIC_LIB}")
+    target_link_libraries(ProjetAssetEngine PRIVATE "${SDL3_STATIC_LIB}")
+else()
+    target_link_directories(ProjetAssetEngine PRIVATE
+        "${SDL3_ROOT_DIR}"
+        "${SDL3_ROOT_DIR}/SDL3"
+    )
+    target_link_libraries(ProjetAssetEngine PRIVATE SDL3-static)
+endif()
+
+if(WIN32)
+    target_link_libraries(ProjetAssetEngine PRIVATE
+        winmm
+        imm32
+        setupapi
+        version
+        ole32
+        oleaut32
+        advapi32
+        shell32
+        uuid
+    )
+endif()
