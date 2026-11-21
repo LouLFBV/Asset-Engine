@@ -1,5 +1,6 @@
 set(PROJECT_LEGACY_SOURCES
     main.cpp
+    Archive.cpp
     Window.cpp
     Pawn.cpp
     JsonArchive.cpp
