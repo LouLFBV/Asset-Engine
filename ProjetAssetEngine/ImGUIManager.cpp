@@ -37,38 +37,21 @@ static std::string NormalizePath(const std::string& path)
     return normalized.lexically_normal().generic_string();
 }
 
-std::string ImGUIManager::ResolveAssetsDir(bool createIfMissing)
+std::string ImGUIManager::ResolveAssetsDir(bool createIfMissing = false)
 {
-    const std::vector<std::filesystem::path> candidates = {
-        std::filesystem::path("Assets"),
-        std::filesystem::path("ProjetAssetEngine/Assets"),
-        std::filesystem::path("../../ProjetAssetEngine/Assets"),
-        std::filesystem::path("../../../ProjetAssetEngine/Assets"),
-        std::filesystem::path("../../Assets")
-    };
+#ifdef PROJET_ASSET_ENGINE_ASSETS_DIR
+    const std::filesystem::path targetDir(PROJET_ASSET_ENGINE_ASSETS_DIR);
+#else
+    const std::filesystem::path targetDir("ProjetAssetEngine/Assets");
+#endif
 
     std::error_code ec;
-    for (const auto& candidate : candidates)
+    if (createIfMissing && !std::filesystem::exists(targetDir, ec))
     {
-        if (std::filesystem::exists(candidate, ec) &&
-            std::filesystem::is_directory(candidate, ec))
-        {
-            return NormalizePath(candidate.string());
-        }
+        std::filesystem::create_directories(targetDir, ec);
     }
 
-    // Fallback par défaut : crée "ProjetAssetEngine/Assets" ou "Assets"
-    const std::filesystem::path fallback =
-        std::filesystem::exists("ProjetAssetEngine", ec)
-        ? std::filesystem::path("ProjetAssetEngine/Assets")
-        : std::filesystem::path("Assets");
-
-    if (createIfMissing)
-    {
-        std::filesystem::create_directories(fallback, ec);
-    }
-
-    return NormalizePath(fallback.string());
+    return NormalizePath(targetDir.string());
 }
 
 // Vérifie si un Pawn est déjà présent dans le monde.

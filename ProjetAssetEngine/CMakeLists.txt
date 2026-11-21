@@ -83,3 +83,7 @@ if(WIN32)
         uuid
     )
 endif()
+
+target_compile_definitions(ProjetAssetEngine PRIVATE
+    PROJET_ASSET_ENGINE_ASSETS_DIR="${CMAKE_CURRENT_SOURCE_DIR}/Assets"
+)
