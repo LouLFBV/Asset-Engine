@@ -37,7 +37,7 @@ static std::string NormalizePath(const std::string& path)
     return normalized.lexically_normal().generic_string();
 }
 
-std::string ImGUIManager::ResolveAssetsDir(bool createIfMissing = false)
+std::string ImGUIManager::ResolveAssetsDir(bool createIfMissing)
 {
 #ifdef PROJET_ASSET_ENGINE_ASSETS_DIR
     const std::filesystem::path targetDir(PROJET_ASSET_ENGINE_ASSETS_DIR);
