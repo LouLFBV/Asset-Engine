@@ -1,4 +1,3 @@
-
 #pragma once
 
 #include <set>
@@ -23,13 +22,10 @@ private:
 
     std::unordered_map<Guid, Asset*> m_assetRegistry;
 
-    // Assets actuellement en cours de chargement.
     std::set<Guid> m_loadingTasks;
 
-    // Protection du set.
     std::mutex m_loadingMutex;
 
-    // Destruction des assets.
     void ClearRegistry();
 
 public:
@@ -44,9 +40,9 @@ public:
 
     void ScanDirectory(const std::string& directoryPath, std::vector<Pawn*>& worldPawns);
 
-    JobSystem& GetJobSystem();
+    [[nodiscard]] JobSystem& GetJobSystem() noexcept;
 
-    std::unordered_map<Guid, Asset*>& GetRegistry()
+    [[nodiscard]] inline std::unordered_map<Guid, Asset*>& GetRegistry() noexcept
     {
         return m_assetRegistry;
     }

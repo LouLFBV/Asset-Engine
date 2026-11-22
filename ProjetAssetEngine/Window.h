@@ -21,25 +21,18 @@ public:
     Window(const Window&) = delete;
     Window& operator=(const Window&) = delete;
 
-    bool Init();
-
-    bool PollEvents();
-
+    [[nodiscard]] bool Init();
+    [[nodiscard]] bool PollEvents();
     void Render();
-
     void Clear();
-
     void Present();
 
-    SDL_Window* GetWindow() const { return m_window; }
+    [[nodiscard]] inline SDL_Window* GetWindow() const noexcept { return m_window; }
+    [[nodiscard]] inline SDL_Renderer* GetRenderer() const noexcept  { return m_renderer; }
+    [[nodiscard]] inline int GetRenderWidth() const noexcept  { return m_renderWidth; }
+    [[nodiscard]] inline int GetRenderHeight() const noexcept { return m_renderHeight; }
 
-    SDL_Renderer* GetRenderer() const { return m_renderer; }
-
-    int GetRenderWidth() const { return m_renderWidth; }
-
-    int GetRenderHeight() const { return m_renderHeight; }
-
-    bool IsInitialized() const { return m_window != nullptr && m_renderer != nullptr; }
+    [[nodiscard]] inline bool IsInitialized() const noexcept  { return m_window != nullptr && m_renderer != nullptr; }
 
 private:
 

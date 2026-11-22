@@ -1,10 +1,13 @@
 #pragma once
+
 #include "RTTI.h"
 #include "Archive.h"
 #include <vector>
 #include <unordered_map>
 #include <string>
 #include <iostream>
+
+// CLASSE FAITE POUR SIMULER UN ASSET (UTILISER POUR IMGUI) !
 
 class Pawn : public RTTI {
     DECLARE_RTTI(Pawn)
@@ -13,25 +16,20 @@ public:
     int health = 100;
     float speed = 10.0f;
 
-    // 1. Tableaux simples
     std::vector<int> inventory = { 10, 20, 30 };
 
-    // 2. Tableaux imbriqués (Grille 2D)
     std::vector<std::vector<int>> grid = {
         {1, 0, 1},
         {0, 2, 0}
     };
 
-    // 3. Maps
     std::unordered_map<std::string, int> stats = {
         {"Strength", 15},
         {"Agility", 22}
     };
 
-    // 4. Type polymorphe (Pointeur vers une classe dérivée de RTTI)
     RTTI* equippedWeapon = nullptr;
 
-    // NOUVEAU : Le Pawn garde en mémoire son chemin de fichier d'origine (Asset Registry)
     std::string sourceFilePath = "";
 
     Pawn() = default;
@@ -45,10 +43,8 @@ public:
         ar.Process("Inventory", inventory);
         ar.Process("Grid", grid);
         ar.Process("Stats", stats);
-        ar.Process("EquippedWeapon", equippedWeapon); // Gère le polymorphisme !
+        ar.Process("EquippedWeapon", equippedWeapon);
 
-        // Note : On ne serialize pas forcément sourceFilePath dans le fichier de sauvegarde 
-        // car c'est une métadonnée d'exécution liée à l'Asset Registry.
     }
 
     void Print() const {

@@ -1,7 +1,5 @@
-
 #pragma once
 
-#include <atomic>
 #include <condition_variable>
 #include <cstdint>
 #include <cstring>
@@ -20,21 +18,16 @@ struct JobSystem
     ~JobSystem();
 
     void Submit(Job job, bool urgent = false);
-
     void WaitIdle();
-
     void WorkerLoop();
 
     std::vector<std::thread> jb_workers;
-
     std::deque<Job> jb_queue;
-
     std::mutex jb_mutex;
 
     std::condition_variable jb_cvWork;
     std::condition_variable jb_cvIdle;
 
     int jb_pending = 0;
-
     bool jb_stop = false;
 };

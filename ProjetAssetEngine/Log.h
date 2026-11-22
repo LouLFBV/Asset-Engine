@@ -13,7 +13,7 @@ enum class LogLevel {
 class Log {
 private:
     static std::ofstream s_LogFile;
-    static std::mutex s_Mutex; // Pour éviter les conflits si plusieurs threads loguent en même temps (JobSystem !)
+    static std::mutex s_Mutex; 
 
 public:
     static void Init(const std::string& filepath = "engine.log");

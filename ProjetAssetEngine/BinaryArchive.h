@@ -1,6 +1,5 @@
 #pragma once
 
-#include <iostream>
 #include <fstream>
 
 #include "Archive.h"
@@ -14,12 +13,12 @@ public:
 
     ~BinaryArchive() override;
 
-    // Surcharges des méthodes de la classe parent
-    void Process(const char* Key, int& Data) override;
-    void Process(const char* Key, float& Data) override;
-    void Process(const char* Key, double& Data) override;
-    void Process(const char* Key, bool& Data) override;
-    void Process(const char* Key, char& Data) override;
+    void Process(const char* Key, int& Data) override { Process<int>(Key, Data); }
+    void Process(const char* Key, float& Data) override { Process<float>(Key, Data); }
+    void Process(const char* Key, double& Data) override { Process<double>(Key, Data); }
+    void Process(const char* Key, bool& Data) override { Process<bool>(Key, Data); }
+    void Process(const char* Key, char& Data) override { Process<char>(Key, Data); }
+
     void Process(const char* Key, std::string& Data) override;
 
     void Process(const char* Key, uint16_t& Data) override { Process<uint16_t>(Key, Data); }
@@ -27,7 +26,6 @@ public:
     void Process(const char* Key, int16_t& Data) override { Process<int16_t>(Key, Data); }
 
     template <typename T>
-        requires std::is_arithmetic_v<T>
     void Process(const char* key, T& data) { 
         if (IsReading()) {
             m_stream.read(reinterpret_cast<char*>(&data), sizeof(T));
@@ -37,5 +35,5 @@ public:
         }
     }
 
-    bool IsValid() const { return m_stream.is_open() && m_stream.good(); }
+    [[nodiscard]] inline bool IsValid() const noexcept { return m_stream.is_open() && m_stream.good(); }
 };

@@ -1,7 +1,7 @@
 #include "Guid.h"
 #include <limits>
 
-bool Guid::operator==(const Guid& other) const
+bool Guid::operator==(const Guid& other) const noexcept
 {
 	if (data1 != other.data1 || data2 != other.data2 || data3 != other.data3)
 		return false;
@@ -13,7 +13,7 @@ bool Guid::operator==(const Guid& other) const
 	return true;
 }
 
-bool Guid::operator<(const Guid& other) const
+bool Guid::operator<(const Guid& other) const noexcept
 {
 	if (data1 < other.data1)
 		return true;

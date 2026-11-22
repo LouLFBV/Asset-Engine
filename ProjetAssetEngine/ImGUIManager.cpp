@@ -246,15 +246,6 @@ void ImGUIManager::DrawDashboard(
 
     ImGui::Begin("Dashboard - Moteur de Jeu C++");
 
-    ImGui::TextColored(
-        ImVec4(0.0f, 0.8f, 1.0f, 1.0f),
-        "Moteur actif & connecte"
-    );
-
-    ImGui::Text(
-        "FPS : %.1f",
-        ImGui::GetIO().Framerate
-    );
 
     ImGui::Separator();
 
