@@ -3,8 +3,8 @@
 
 #include <iostream>
 
-Window::Window(int renderWidth, int renderHeight, int windowWidth, int windowHeight, const std::string& title)
-    : m_renderWidth(renderWidth), m_renderHeight(renderHeight),
+Window::Window(int renderWidth, int renderHeight, int windowWidth, int windowHeight, const std::string& title) : 
+    m_renderWidth(renderWidth), m_renderHeight(renderHeight),
     m_windowWidth(windowWidth), m_windowHeight(windowHeight),
     m_title(title)
 {
@@ -12,12 +12,12 @@ Window::Window(int renderWidth, int renderHeight, int windowWidth, int windowHei
 
 Window::~Window()
 {
-    if (m_renderer) {
+    if (m_renderer) 
         SDL_DestroyRenderer(m_renderer);
-    }
-    if (m_window) {
+    
+    if (m_window) 
         SDL_DestroyWindow(m_window);
-    }
+    
 
     SDL_Quit();
 }

@@ -7,19 +7,12 @@
 JobSystem::JobSystem(int threads)
 {
     if (threads <= 0)
-    {
-        threads = static_cast<int>(
-            std::thread::hardware_concurrency()
-            );
-    }
+        threads = static_cast<int>(std::thread::hardware_concurrency());
 
-    // hardware_concurrency peut retourner 0.
     if (threads <= 0)
-    {
         threads = 1;
-    }
 
-    for (int i = 0; i < threads; ++i)
+    for (std::size_t i = 0; i < threads; ++i)
     {
         jb_workers.emplace_back([this]()
             {
@@ -30,7 +23,6 @@ JobSystem::JobSystem(int threads)
 
 JobSystem::~JobSystem()
 {
-    // On attend que toutes les taches soient terminees.
     WaitIdle();
 
     {
@@ -43,18 +35,14 @@ JobSystem::~JobSystem()
     for (std::thread& worker : jb_workers)
     {
         if (worker.joinable())
-        {
             worker.join();
-        }
     }
 }
 
 void JobSystem::Submit(Job job, bool urgent)
 {
     if (!job)
-    {
         return;
-    }
 
     {
         std::lock_guard<std::mutex> lock(jb_mutex);
@@ -67,13 +55,9 @@ void JobSystem::Submit(Job job, bool urgent)
         }
 
         if (urgent)
-        {
             jb_queue.emplace_front(std::move(job));
-        }
         else
-        {
             jb_queue.emplace_back(std::move(job));
-        }
 
         ++jb_pending;
     }
@@ -105,17 +89,13 @@ void JobSystem::WorkerLoop()
                     return jb_stop || !jb_queue.empty();
                 });
 
-            // On termine uniquement lorsque la queue est vide.
             if (jb_queue.empty() && jb_stop)
-            {
                 return;
-            }
 
             job = std::move(jb_queue.front());
             jb_queue.pop_front();
         }
 
-        // Execution securisee de la tache.
         try
         {
             job();
@@ -137,9 +117,7 @@ void JobSystem::WorkerLoop()
             --jb_pending;
 
             if (jb_pending == 0)
-            {
                 jb_cvIdle.notify_all();
-            }
         }
     }
 }

@@ -19,6 +19,8 @@
 #include <string>
 #include <exception>
 
+//CLASSE ADAPTEE POUR GERER LES PAWNS
+
 static std::string NormalizePath(const std::string& path)
 {
     std::error_code error;
@@ -47,14 +49,11 @@ std::string ImGUIManager::ResolveAssetsDir(bool createIfMissing)
 
     std::error_code ec;
     if (createIfMissing && !std::filesystem::exists(targetDir, ec))
-    {
         std::filesystem::create_directories(targetDir, ec);
-    }
 
     return NormalizePath(targetDir.string());
 }
 
-// Vérifie si un Pawn est déjà présent dans le monde.
 static bool IsPawnAlreadyInWorld(
     Pawn* pawn,
     const std::string& assetPath,
@@ -64,95 +63,60 @@ static bool IsPawnAlreadyInWorld(
     if (pawn == nullptr)
         return false;
 
-    const std::string normalizedAssetPath =
-        NormalizePath(assetPath);
+    const std::string normalizedAssetPath = NormalizePath(assetPath);
 
     for (Pawn* worldPawn : worldPawns)
     {
         if (worldPawn == nullptr)
             continue;
 
-        // Même instance en mémoire.
         if (worldPawn == pawn)
             return true;
 
-        // Deux instances associées au même fichier.
-        if (!worldPawn->sourceFilePath.empty() &&
-            NormalizePath(worldPawn->sourceFilePath) ==
-            normalizedAssetPath)
-        {
+        if (!worldPawn->sourceFilePath.empty() && NormalizePath(worldPawn->sourceFilePath) == normalizedAssetPath)
             return true;
-        }
     }
 
     return false;
 }
 
-// Retire un Pawn du monde sans détruire les objets appartenant
-// à l'AssetManager.
-static void RemovePawnFromWorld(
-    size_t index,
-    std::vector<Pawn*>& worldPawns,
-    std::vector<std::unique_ptr<Pawn>>& ownedPawns,
-    int& selectedPawnIndex
-)
+void ImGUIManager::RemovePawnFromWorld(size_t index, std::vector<Pawn*>& worldPawns, std::vector<std::unique_ptr<Pawn>>& ownedPawns)
 {
-    LOG_INFO("RemovePawnFromWorld appelee !");
     if (index >= worldPawns.size())
         return;
 
     Pawn* pawnToRemove = worldPawns[index];
 
-    // Retirer le Pawn du monde.
     worldPawns.erase(worldPawns.begin() + index);
 
-    // Vérifier si une autre référence au Pawn existe encore.
-    bool stillPresent =
-        std::find(
-            worldPawns.begin(),
-            worldPawns.end(),
-            pawnToRemove
-        ) != worldPawns.end();
+    bool stillPresent = std::find(worldPawns.begin(), worldPawns.end(), pawnToRemove) != worldPawns.end();
 
-    // Détruire uniquement les Pawns possédés par ownedPawns,
-    // et seulement s'ils ne sont plus présents dans le monde.
     if (!stillPresent)
     {
-        auto it = std::find_if(
-            ownedPawns.begin(),
-            ownedPawns.end(),
-            [pawnToRemove](const std::unique_ptr<Pawn>& pawn)
+        auto it = std::find_if(ownedPawns.begin(), ownedPawns.end(), [pawnToRemove](const std::unique_ptr<Pawn>& pawn)
             {
                 return pawn.get() == pawnToRemove;
             }
         );
 
         if (it != ownedPawns.end())
-        {
             ownedPawns.erase(it);
-        }
     }
 
-    // Mise à jour de la sélection.
     if (worldPawns.empty())
-    {
-        selectedPawnIndex = -1;
-    }
+        m_selectedPawnIndex = -1;
     else
     {
-        if (selectedPawnIndex > static_cast<int>(index))
+        if (m_selectedPawnIndex > static_cast<int>(index))
+            --m_selectedPawnIndex;
+        else if (m_selectedPawnIndex == static_cast<int>(index))
         {
-            --selectedPawnIndex;
-        }
-        else if (selectedPawnIndex == static_cast<int>(index))
-        {
-            selectedPawnIndex = std::min(
-                selectedPawnIndex,
+            m_selectedPawnIndex = std::min(
+                m_selectedPawnIndex,
                 static_cast<int>(worldPawns.size()) - 1
             );
         }
     }
-
     LOG_INFO("Pawn retire du monde.");
 }
 
@@ -212,7 +176,7 @@ void ImGUIManager::Shutdown()
     m_initialized = false;
 }
 
-void ImGUIManager::BeginFrame()
+void ImGUIManager::BeginFrame() const
 {
     if (!m_initialized)
         return;
@@ -231,21 +195,13 @@ void ImGUIManager::ApplyStyle()
     style.FrameRounding = 3.0f;
 }
 
-void ImGUIManager::DrawDashboard(
-    AssetManager& assetManager,
-    std::vector<Pawn*>& worldPawns,
-    std::vector<std::unique_ptr<Pawn>>& ownedPawns
-)
+void ImGUIManager::DrawDashboard(AssetManager& assetManager, std::vector<Pawn*>& worldPawns, std::vector<std::unique_ptr<Pawn>>& ownedPawns)
 {
     ApplyStyle();
 
-    ImGui::SetNextWindowSize(
-        ImVec2(750, 800),
-        ImGuiCond_FirstUseEver
-    );
+    ImGui::SetNextWindowSize(ImVec2(750, 800),   ImGuiCond_FirstUseEver);
 
-    ImGui::Begin("Dashboard - Moteur de Jeu C++");
-
+    ImGui::Begin("Dashboard - Asset Engine");
 
     ImGui::Separator();
 
@@ -256,37 +212,24 @@ void ImGUIManager::DrawDashboard(
     ImGui::End();
 }
 
-void ImGUIManager::DrawPawnPanel(
-    std::vector<Pawn*>& worldPawns,
-    std::vector<std::unique_ptr<Pawn>>& ownedPawns
-)
+void ImGUIManager::DrawPawnPanel(std::vector<Pawn*>& worldPawns, std::vector<std::unique_ptr<Pawn>>& ownedPawns)
 {
-    if (!ImGui::CollapsingHeader(
-        "Gestion des Pawns",
-        ImGuiTreeNodeFlags_DefaultOpen))
-    {
+    if (!ImGui::CollapsingHeader("Gestion des Pawns", ImGuiTreeNodeFlags_DefaultOpen))
         return;
-    }
 
-    // Création d'un nouveau Pawn.
     if (ImGui::Button("Creer un Pawn", ImVec2(-1, 0)))
     {
         auto newPawn = std::make_unique<Pawn>();
 
-        // Valeurs par défaut.
         newPawn->health = 75;
         newPawn->speed = 10.0f;
         newPawn->equippedWeapon = new Weapon();
 
-        // Ajouter le Pawn au monde.
         worldPawns.push_back(newPawn.get());
 
-        // Transférer sa propriété à ownedPawns.
         ownedPawns.push_back(std::move(newPawn));
 
-        // Sélectionner automatiquement le nouveau Pawn.
-        m_selectedPawnIndex =
-            static_cast<int>(worldPawns.size()) - 1;
+        m_selectedPawnIndex = static_cast<int>(worldPawns.size()) - 1;
 
         LOG_INFO("Nouveau Pawn cree et ajoute au monde.");
     }
@@ -298,7 +241,6 @@ void ImGUIManager::DrawPawnPanel(
         worldPawns.size()
     );
 
-    // Liste des Pawns.
     int pawnIndexToRemove = -1;
 
     if (ImGui::BeginListBox("##PawnList", ImVec2(-1, 120)))
@@ -322,17 +264,13 @@ void ImGUIManager::DrawPawnPanel(
                     << " (Sante : " << pawn->health << ")";
             }
             else
-            {
-                ss << "Pawn_Custom #" << i
-                    << " (Sante : " << pawn->health << ")";
-            }
+                ss << "Pawn_Custom #" << i << " (Sante : " << pawn->health << ")";
 
             bool selected = m_selectedPawnIndex == static_cast<int>(i);
 
             if (ImGui::Selectable(ss.str().c_str(), selected))
-            {
                 m_selectedPawnIndex = static_cast<int>(i);
-            }
+
             ImGui::PopID();
 
             if (pawnIndexToRemove != -1)
@@ -342,16 +280,8 @@ void ImGUIManager::DrawPawnPanel(
         ImGui::EndListBox();
     }
 
-    // Suppression après la liste.
     if (pawnIndexToRemove != -1)
-    {
-        RemovePawnFromWorld(
-            static_cast<size_t>(pawnIndexToRemove),
-            worldPawns,
-            ownedPawns,
-            m_selectedPawnIndex
-        );
-    }
+        RemovePawnFromWorld(static_cast<size_t>(pawnIndexToRemove), worldPawns, ownedPawns);
 
     if (worldPawns.empty())
     {
@@ -359,11 +289,8 @@ void ImGUIManager::DrawPawnPanel(
         return;
     }
 
-    if (m_selectedPawnIndex < 0 ||
-        m_selectedPawnIndex >= static_cast<int>(worldPawns.size()))
-    {
+    if (m_selectedPawnIndex < 0 || m_selectedPawnIndex >= static_cast<int>(worldPawns.size()))
         m_selectedPawnIndex = 0;
-    }
 
     Pawn* currentPawn = worldPawns[m_selectedPawnIndex];
 
@@ -372,49 +299,21 @@ void ImGUIManager::DrawPawnPanel(
 
     ImGui::Separator();
 
-    ImGui::Text(
-        "Inspecteur du Pawn [#%d]",
-        m_selectedPawnIndex
-    );
+    ImGui::Text("Inspecteur du Pawn [#%d]", m_selectedPawnIndex);
 
     if (!currentPawn->sourceFilePath.empty())
-    {
-        ImGui::TextColored(
-            ImVec4(1.0f, 0.8f, 0.0f, 1.0f),
-            "Source : %s",
-            currentPawn->sourceFilePath.c_str()
-        );
-    }
+        ImGui::TextColored(ImVec4(1.0f, 0.8f, 0.0f, 1.0f), "Source : %s", currentPawn->sourceFilePath.c_str());
 
-    ImGui::SliderInt(
-        "Sante (Health)",
-        &currentPawn->health,
-        0,
-        200
-    );
+    ImGui::SliderInt("Sante (Health)", &currentPawn->health, 0, 200);
 
-    ImGui::SliderFloat(
-        "Vitesse (Speed)",
-        &currentPawn->speed,
-        1.0f,
-        50.0f
-    );
+    ImGui::SliderFloat("Vitesse (Speed)", &currentPawn->speed, 1.0f, 50.0f);
 
     if (currentPawn->equippedWeapon)
     {
-        Weapon* weapon =
-            SAFE_CAST(Weapon, currentPawn->equippedWeapon);
+        Weapon* weapon = SAFE_CAST(Weapon, currentPawn->equippedWeapon);
 
         if (weapon)
-        {
-            ImGui::DragInt(
-                "Degats Arme",
-                &weapon->damage,
-                1,
-                0,
-                500
-            );
-        }
+            ImGui::DragInt("Degats Arme", &weapon->damage, 1, 0, 500);
     }
 
     if (ImGui::Button("Sauvegarder en JSON"))
@@ -422,42 +321,29 @@ void ImGUIManager::DrawPawnPanel(
         std::filesystem::path path;
 
         if (!currentPawn->sourceFilePath.empty())
-        {
             path = currentPawn->sourceFilePath;
-        }
         else
         {
             const std::string assetsDir = ResolveAssetsDir(true);
-            path = std::filesystem::path(assetsDir) /
-                ("pawn_" + std::to_string(m_selectedPawnIndex));
+            path = std::filesystem::path(assetsDir) / ("pawn_" + std::to_string(m_selectedPawnIndex));
         }
 
         path.replace_extension(".json");
 
         try
         {
-            JsonArchive archive(
-                path.string(),
-                ArchiveDirection::Write
-            );
+            JsonArchive archive(path.string(), ArchiveDirection::Write);
 
             currentPawn->Process(archive);
 
             if (currentPawn->sourceFilePath.empty())
-            {
                 currentPawn->sourceFilePath = path.string();
-            }
 
-            LOG_INFO(
-                ("Sauvegarde JSON : " + path.string()).c_str()
-            );
+            LOG_INFO(("Sauvegarde JSON : " + path.string()).c_str());
         }
         catch (const std::exception& e)
         {
-            LOG_ERROR(
-                ("Erreur sauvegarde JSON : " +
-                    std::string(e.what())).c_str()
-            );
+            LOG_ERROR(("Erreur sauvegarde JSON : " + std::string(e.what())).c_str());
         }
     }
 
@@ -468,9 +354,7 @@ void ImGUIManager::DrawPawnPanel(
         std::filesystem::path path;
 
         if (!currentPawn->sourceFilePath.empty())
-        {
             path = currentPawn->sourceFilePath;
-        }
         else
         {
             const std::string assetsDir = ResolveAssetsDir(true);
@@ -482,28 +366,18 @@ void ImGUIManager::DrawPawnPanel(
 
         try
         {
-            BinaryArchive archive(
-                path.string(),
-                ArchiveDirection::Write
-            );
+            BinaryArchive archive(path.string(), ArchiveDirection::Write);
 
             currentPawn->Process(archive);
 
             if (currentPawn->sourceFilePath.empty())
-            {
                 currentPawn->sourceFilePath = path.string();
-            }
 
-            LOG_INFO(
-                ("Sauvegarde binaire : " + path.string()).c_str()
-            );
+            LOG_INFO(("Sauvegarde binaire : " + path.string()).c_str());
         }
         catch (const std::exception& e)
         {
-            LOG_ERROR(
-                ("Erreur sauvegarde binaire : " +
-                    std::string(e.what())).c_str()
-            );
+            LOG_ERROR(("Erreur sauvegarde binaire : " + std::string(e.what())).c_str());
         }
     }
 
@@ -512,42 +386,23 @@ void ImGUIManager::DrawPawnPanel(
     if (ImGui::Button("Retirer du monde", ImVec2(-1, 0)))
     {
         RemovePawnFromWorld(
-            static_cast<size_t>(m_selectedPawnIndex),
-            worldPawns,
-            ownedPawns,
-            m_selectedPawnIndex
-        );
+            static_cast<size_t>(m_selectedPawnIndex), worldPawns, ownedPawns);
     }
 }
 
-void ImGUIManager::DrawAssetPanel(
-    AssetManager& assetManager,
-    std::vector<Pawn*>& worldPawns
-)
+void ImGUIManager::DrawAssetPanel(AssetManager& assetManager, std::vector<Pawn*>& worldPawns)
 {
-    if (!ImGui::CollapsingHeader(
-        "Asset Registry & JobSystem (Async)",
-        ImGuiTreeNodeFlags_DefaultOpen))
-    {
+    if (!ImGui::CollapsingHeader("Asset Registry & JobSystem (Async)", ImGuiTreeNodeFlags_DefaultOpen))
         return;
-    }
 
     if (ImGui::Button("Re-scanner le dossier Assets"))
     {
         assetManager.ScanDirectory(ResolveAssetsDir(false), worldPawns);
 
         if (worldPawns.empty())
-        {
             m_selectedPawnIndex = -1;
-        }
         else
-        {
-            m_selectedPawnIndex = std::clamp(
-                m_selectedPawnIndex,
-                0,
-                static_cast<int>(worldPawns.size()) - 1
-            );
-        }
+            m_selectedPawnIndex = std::clamp(m_selectedPawnIndex, 0, static_cast<int>(worldPawns.size()) - 1);
 
         LOG_INFO("Re-scan du dossier Assets demande.");
     }
@@ -565,10 +420,7 @@ void ImGUIManager::DrawAssetPanel(
 
         ImGui::PushID(asset);
 
-        ImGui::BulletText(
-            "Path : %s",
-            asset->path.c_str()
-        );
+        ImGui::BulletText("Path : %s", asset->path.c_str());
 
         ImGui::SameLine();
 
@@ -583,17 +435,13 @@ void ImGUIManager::DrawAssetPanel(
             if (!worldPawn)
                 continue;
 
-            // Même instance.
             if (assetPawn != nullptr && worldPawn == assetPawn)
             {
                 alreadyInWorld = true;
                 break;
             }
 
-            // Même fichier source.
-            if (!worldPawn->sourceFilePath.empty() &&
-                NormalizePath(worldPawn->sourceFilePath) ==
-                NormalizePath(asset->path))
+            if (!worldPawn->sourceFilePath.empty() && NormalizePath(worldPawn->sourceFilePath) == NormalizePath(asset->path))
             {
                 alreadyInWorld = true;
                 break;
@@ -601,25 +449,16 @@ void ImGUIManager::DrawAssetPanel(
         }
 
         if (alreadyInWorld)
-        {
             ImGui::TextDisabled("[Deja dans le monde]");
-        }
         else if (assetPawn != nullptr)
         {
-            ImGui::TextColored(
-                ImVec4(0.0f, 1.0f, 0.0f, 1.0f),
-                "[Charge]"
-            );
+            ImGui::TextColored(ImVec4(0.0f, 1.0f, 0.0f, 1.0f), "[Charge]");
 
             ImGui::SameLine();
 
             if (ImGui::Button("Ajouter au monde"))
             {
-                // Vérification supplémentaire avant l'ajout.
-                if (!IsPawnAlreadyInWorld(
-                    assetPawn,
-                    asset->path,
-                    worldPawns))
+                if (!IsPawnAlreadyInWorld(assetPawn, asset->path, worldPawns))
                 {
                     assetPawn->sourceFilePath = asset->path;
 
@@ -628,17 +467,13 @@ void ImGUIManager::DrawAssetPanel(
                     LOG_INFO("Pawn ajoute au monde.");
                 }
                 else
-                {
                     LOG_INFO("Ce Pawn est deja present dans le monde.");
-                }
             }
         }
         else
         {
             if (ImGui::Button("Load Async"))
-            {
                 assetManager.LoadAsync(asset);
-            }
 
             ImGui::SameLine();
 
@@ -649,26 +484,14 @@ void ImGUIManager::DrawAssetPanel(
     }
 }
 
-void ImGUIManager::Render(
-    SDL_Renderer* renderer,
-    AssetManager& assetManager,
-    std::vector<Pawn*>& worldPawns,
-    std::vector<std::unique_ptr<Pawn>>& ownedPawns
-)
+void ImGUIManager::Render(SDL_Renderer* renderer, AssetManager& assetManager, std::vector<Pawn*>& worldPawns, std::vector<std::unique_ptr<Pawn>>& ownedPawns)
 {
     if (!m_initialized || renderer == nullptr)
         return;
 
-    DrawDashboard(
-        assetManager,
-        worldPawns,
-        ownedPawns
-    );
+    DrawDashboard(assetManager, worldPawns, ownedPawns);
 
     ImGui::Render();
 
-    ImGui_ImplSDLRenderer3_RenderDrawData(
-        ImGui::GetDrawData(),
-        renderer
-    );
+    ImGui_ImplSDLRenderer3_RenderDrawData(ImGui::GetDrawData(), renderer);
 }

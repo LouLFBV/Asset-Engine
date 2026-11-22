@@ -28,6 +28,6 @@ struct JobSystem
     std::condition_variable jb_cvWork;
     std::condition_variable jb_cvIdle;
 
-    int jb_pending = 0;
+    std::size_t jb_pending = 0;
     bool jb_stop = false;
 };
